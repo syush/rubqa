@@ -99,8 +99,8 @@ require 'rails_helper'
 
         it 'does not change question attributes' do
           question.reload
-          expect(question.title).to eq "My question"
-          expect(question.body).to eq "question body"
+          expect(question.title).to eq "test title"
+          expect(question.body).to eq "test body"
         end
 
         it 'render edit template' do
