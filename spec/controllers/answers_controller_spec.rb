@@ -32,6 +32,16 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: @question.id, answer: attr
         expect(response).to redirect_to question_path(@question)
       end
+
+      it 'links with the correct question' do
+        attr = FactoryGirl.attributes_for(:answer)
+        post :create, question_id: @question.id, answer: attr
+        @question = Question.find(@question.id)
+        expect(@question.answers.first.body).to eq attr[:body]
+        expect(@question.answers.first.question.id).to eq @question.id
+      end
+
+
     end
 
     context 'invalid' do
