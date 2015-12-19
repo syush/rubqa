@@ -46,13 +46,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'invalid' do
       it 'does not save new answer in DB' do
-        attr = FactoryGirl.attributes_for(:invalid_answer)
-        answer = FactoryGirl.build(:invalid_answer)
+        attr = attributes_for(:invalid_answer)
+        answer = build(:invalid_answer)
         expect { post :create, question_id: @question.id, answer: attr }.to_not change(Answer, :count)
       end
 
       it 'renders new template' do
-        attr = FactoryGirl.attributes_for(:invalid_answer)
+        attr = attributes_for(:invalid_answer)
         post :create, question_id: @question.id, answer: attr
         expect(response).to render_template :new
       end
