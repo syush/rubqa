@@ -115,9 +115,11 @@ require 'rails_helper'
         before { patch :update, id: question, question: { title: nil, body: nil } }
 
         it 'does not change question attributes' do
+          old_title = question.title
+          old_body = question.body
           question.reload
-          expect(question.title).to eq "test title"
-          expect(question.body).to eq "test body"
+          expect(question.title).to eq old_title
+          expect(question.body).to eq old_body
         end
 
         it 'render edit template' do
