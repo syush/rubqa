@@ -1,8 +1,8 @@
 require 'rails_helper'
 
   RSpec.describe QuestionsController, type: :controller do
-    let(:question) { create(:question) }
     let(:user) { create(:user) }
+    let(:question) { create(:question, user:user) }
 
     describe "GET #index" do
       before { get :index }
@@ -61,19 +61,22 @@ require 'rails_helper'
 
     describe "POST #create" do
 
-      before do
-        login(user)
-      end
+      before { login(user) }
 
       context 'valid' do
         it 'saves new question in DB' do
           expect { post :create,
-                        question: FactoryGirl.attributes_for(:question) }.to change(Question, :count).by(1)
+                        question: attributes_for(:question) }.to change(Question, :count).by(1)
+        end
+
+        it 'links the question with the current user' do
+          post :create, question: attributes_for(:question)
+          question = Question.last
+          expect(question.user).to eq user
         end
 
         it 'redirects to show' do
-          post :create,
-               question: attributes_for(:question)
+          post :create, question: attributes_for(:question)
           expect(response).to redirect_to question_path(assigns(:question))
         end
       end
@@ -85,8 +88,7 @@ require 'rails_helper'
         end
 
         it 'renders show template' do
-          post :create,
-               question: attributes_for(:invalid_question)
+          post :create, question: attributes_for(:invalid_question)
           expect(response).to render_template :new
         end
       end
@@ -94,9 +96,7 @@ require 'rails_helper'
 
     describe "PATCH #update" do
 
-      before do
-        login(user)
-      end
+      before { login(user) }
 
       context 'valid' do
         before { patch :update, id: question, question: { title: 'new title', body: 'new body' } }
@@ -129,18 +129,38 @@ require 'rails_helper'
     end
 
     describe "DELETE #destroy" do
-      before do
-        login(user)
-        question
+
+      before { question }
+
+      context 'author' do
+        before { login(user) }
+
+        it 'deletes question from DB' do
+          expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        end
+
+        it 'redirects to index' do
+          delete :destroy, id: question
+          expect(response).to redirect_to questions_path
+        end
       end
 
-      it 'deletes question from DB' do
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      context 'non-author' do
+        before do
+          non_author = create(:user)
+          login(non_author)
+        end
+
+        it 'does not delete the question from DB' do
+          expect { delete :destroy, id: question }.not_to change(Question, :count)
+        end
       end
 
-      it 'redirects to index' do
-        delete :destroy, id: question
-        expect(response).to redirect_to questions_path
+      context 'guest' do
+        it 'does not delete the question from DB' do
+          expect { delete :destroy, id: question }.not_to change(Question, :count)
+        end
       end
+
     end
 end

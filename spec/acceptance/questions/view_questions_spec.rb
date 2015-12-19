@@ -3,7 +3,8 @@ require 'rails_helper'
 feature 'View questions', %q{
    In order to find information, relevant to my needs,
    As a guest,
-   I can see the list of questions} do
+   I can see the list of questions
+} do
 
   given!(:questions) do
     questions = []

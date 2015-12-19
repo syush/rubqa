@@ -20,6 +20,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
+    @question.user = current_user
     if @question.save
       redirect_to @question, notice: 'Your question is successfully created'
     else
@@ -36,8 +37,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if (user_signed_in? && current_user == @question.user)
+      @question.destroy
+      redirect_to questions_path, notice: 'The question was successfully deleted'
+    else
+      redirect_to questions_path, alert: 'You attempted an unauthorized action'
+    end
   end
 
   private

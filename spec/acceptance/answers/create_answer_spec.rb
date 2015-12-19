@@ -3,12 +3,13 @@ require 'rails_helper'
 feature 'Authenticated user creates an answer', %q{
   In order to share my knowledge with the community and safisfy question author's needs,
   As an authenticated user,
-  I reply to an existing question } do
+  I reply to an existing question
+} do
 
-  given!(:question) { create(:question) }
+  given(:user) {create(:user)}
+  given(:question) { create(:question, user:user) }
 
   scenario 'Authenticated user replies a question' do
-    user = create(:user)
     login(user)
     visit question_path(question)
     click_on 'Reply'

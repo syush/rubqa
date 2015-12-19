@@ -12,6 +12,8 @@ RSpec.describe Question, type: :model do
 
   it { should have_many :answers }
 
+  it { should belong_to :user }
+
   it { should validate_length_of(:title).is_at_most(200) }
 
 

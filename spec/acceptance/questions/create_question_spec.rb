@@ -4,7 +4,7 @@ feature 'Create question', %q{
             In order to get an answer to a question
             As an authenticated user
             I want to be able to create a question
-                         } do
+                        } do
   given(:user) { create(:user) }
 
   scenario "Authenticated user creates a question" do
@@ -15,7 +15,7 @@ feature 'Create question', %q{
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question title'
     fill_in 'Text', with: 'Test question text'
-    click_on 'Create'
+    click_on 'Submit'
 
     expect(page).to have_content 'Your question is successfully created'
     expect(page).to have_content 'Test question title'

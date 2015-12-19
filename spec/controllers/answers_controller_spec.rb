@@ -41,9 +41,9 @@ RSpec.describe AnswersController, type: :controller do
       it 'links with the correct question' do
         attr = attributes_for(:answer)
         post :create, question_id: question.id, answer: attr
-        created_question = Question.find(question.id)
-        expect(created_question.answers.first.body).to eq attr[:body]
-        expect(created_question.answers.first.question.id).to eq question.id
+        answered_question = Question.find(question.id)
+        expect(answered_question.answers.first.body).to eq attr[:body]
+        expect(answered_question.answers.first.question.id).to eq question.id
       end
 
 

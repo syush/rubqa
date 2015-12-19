@@ -3,14 +3,15 @@ require 'rails_helper'
 feature 'View question with answers', %q{
         In order to read all information about a question,
         In any role,
-        I can see the question and all answers on the page } do
+        I can see the question and all answers on the page
+} do
 
   given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
   given!(:answers) do
     answers = []
     10.times do
-      answers << create(:answer, question_id:question.id)
+      answers << create(:answer, question:question)
     end
     answers
   end
