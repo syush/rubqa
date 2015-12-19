@@ -2,17 +2,14 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
-  before do
-    @question = create(:question)
-    user = create(:user)
-    login(user)
-  end
+  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+
+  before { login(user) }
 
   describe "GET #new" do
 
-    before do
-      get :new, question_id: @question.id
-    end
+    before { get :new, question_id: question.id }
 
     it 'assigns new Answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -23,7 +20,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'assigns new answer to the right question' do
-      expect(assigns(:question).id).to eq @question.id
+      expect(assigns(:question).id).to eq question.id
     end
 
   end
@@ -32,21 +29,21 @@ RSpec.describe AnswersController, type: :controller do
     context 'valid' do
       it 'saves new question in DB' do
         attr = attributes_for(:answer)
-        expect { post :create, question_id: @question.id, answer: attr }.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question.id, answer: attr }.to change(Answer, :count).by(1)
       end
 
       it 'redirects to show' do
         attr = attributes_for(:answer)
-        post :create, question_id: @question.id, answer: attr
-        expect(response).to redirect_to question_path(@question)
+        post :create, question_id: question.id, answer: attr
+        expect(response).to redirect_to question_path(question)
       end
 
       it 'links with the correct question' do
         attr = attributes_for(:answer)
-        post :create, question_id: @question.id, answer: attr
-        created_question = Question.find(@question.id)
+        post :create, question_id: question.id, answer: attr
+        created_question = Question.find(question.id)
         expect(created_question.answers.first.body).to eq attr[:body]
-        expect(created_question.answers.first.question.id).to eq @question.id
+        expect(created_question.answers.first.question.id).to eq question.id
       end
 
 
@@ -56,12 +53,12 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save new answer in DB' do
         attr = attributes_for(:invalid_answer)
         answer = build(:invalid_answer)
-        expect { post :create, question_id: @question.id, answer: attr }.to_not change(Answer, :count)
+        expect { post :create, question_id: question.id, answer: attr }.to_not change(Answer, :count)
       end
 
       it 'renders new template' do
         attr = attributes_for(:invalid_answer)
-        post :create, question_id: @question.id, answer: attr
+        post :create, question_id: question.id, answer: attr
         expect(response).to render_template :new
       end
     end
