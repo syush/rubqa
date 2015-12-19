@@ -1,2 +1,11 @@
 <h1><%= @question.title %></h1>
 <p><%= @question.body %></p>
+<p><%= link_to 'Reply', new_question_answer_path(@question) %></p>
+<% unless @question.answers.empty? %>
+  <hr>
+  <h2>Answers:</h2>
+  <% @question.answers.each do |answer| %>
+    <%= answer.body %>
+    <hr>
+  <% end %>
+<% end %>
