@@ -2,13 +2,18 @@
 <p><%= @question.body %></p>
 <p><%= link_to 'Reply', new_question_answer_path(@question) %></p>
 <% if user_signed_in? && current_user.id == author_id_of(@question) %>
-    <%= link_to 'Delete', question_path(@question), method: :delete %>
+    <p></p><%= link_to 'Delete question', question_path(@question), method: :delete %></p>
 <% end %>
 <% unless @question.answers.empty? %>
   <hr>
   <h2>Answers:</h2>
-  <% @question.answers.each do |answer| %>
-    <%= answer.body %>
-    <hr>
+  <% @question.answers.each_with_index do |answer, index| %>
+    <div id="answer-<%= index %>">
+      <p><%= answer.body %></p>
+      <% if user_signed_in? && current_user.id == author_id_of(answer) %>
+        <p><%= link_to 'Delete answer', answer_path(answer), method: :delete %></p>
+      <% end %>
+      <hr>
+    </div>
   <% end %>
 <% end %>

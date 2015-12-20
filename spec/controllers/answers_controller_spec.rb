@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
-  let(:user) { create(:user) }
-  let(:question) { create(:question, user:user) }
+  let(:question_author) { create(:user) }
+  let(:answer_author) { create(:user) }
+  let(:question) { create(:question, user:question_author) }
 
-  before { login(user) }
+  before { login(answer_author) }
 
   describe "GET #new" do
 
@@ -38,13 +39,25 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to redirect_to question_path(question)
       end
 
-      it 'links with the correct question' do
+      it 'saves the correct text' do
         attr = attributes_for(:answer)
         post :create, question_id: question.id, answer: attr
         answered_question = Question.find(question.id)
         expect(answered_question.answers.first.body).to eq attr[:body]
+      end
+
+      it 'links with the correct question' do
+        post :create, question_id: question.id, answer: attributes_for(:answer)
+        answered_question = Question.find(question.id)
         expect(answered_question.answers.first.question.id).to eq question.id
       end
+
+      it 'assigns the correct author' do
+        post :create, question_id: question.id, answer: attributes_for(:answer)
+        answered_question = Question.find(question.id)
+        expect(answered_question.answers.first.user.id).to eq answer_author.id
+      end
+
     end
 
     context 'invalid' do
