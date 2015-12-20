@@ -26,5 +26,4 @@ feature 'Authenticated user creates an answer', %q{
     expect(page).to_not have_content('Your answer:')
   end
 
-
 end

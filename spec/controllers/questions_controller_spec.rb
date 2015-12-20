@@ -8,7 +8,7 @@ require 'rails_helper'
       before { get :index }
 
       it 'loads all questions' do
-        questions = create_list(:question, 3)
+        questions = create_list(:question, 3, user:user)
         expect(assigns(:questions)).to eq questions
       end
 
@@ -66,7 +66,7 @@ require 'rails_helper'
       context 'valid' do
         it 'saves new question in DB' do
           expect { post :create,
-                        question: attributes_for(:question) }.to change(Question, :count).by(1)
+                   question: attributes_for(:question) }.to change(Question, :count).by(1)
         end
 
         it 'links the question with the current user' do
@@ -84,7 +84,7 @@ require 'rails_helper'
       context 'invalid' do
         it 'does not save new question in DB' do
           expect { post :create,
-                        question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+                   question: attributes_for(:invalid_question) }.to_not change(Question, :count)
         end
 
         it 'renders show template' do

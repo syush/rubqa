@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
+  let(:question) { create(:question, user:user) }
 
   before { login(user) }
 
@@ -45,8 +45,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answered_question.answers.first.body).to eq attr[:body]
         expect(answered_question.answers.first.question.id).to eq question.id
       end
-
-
     end
 
     context 'invalid' do

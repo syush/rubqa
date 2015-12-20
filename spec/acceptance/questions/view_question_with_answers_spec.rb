@@ -8,13 +8,7 @@ feature 'View question with answers', %q{
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answers) do
-    answers = []
-    10.times do
-      answers << create(:answer, question:question)
-    end
-    answers
-  end
+  given!(:answers) { create_list(:answer, 10, question:question) }
 
   scenario 'Guest sees a question with answers' do
     visit question_path(question)

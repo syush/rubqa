@@ -6,11 +6,8 @@ feature 'View questions', %q{
    I can see the list of questions
 } do
 
-  given!(:questions) do
-    questions = []
-    10.times { questions << create(:question) }
-    questions
-  end
+  given(:user) { create(:user) }
+  given!(:questions) { questions = create_list(:question, 10, user:user) }
 
   scenario 'Guest sees the list of questions' do
     visit questions_path
@@ -29,6 +26,5 @@ feature 'View questions', %q{
       expect(page).to have_content(question.body[0..50])
     end
   end
-
 
 end

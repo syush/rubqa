@@ -6,8 +6,10 @@ RSpec.describe Answer, type: :model do
   #   expect(question).not_to be_valid
   # end
 
-  it { should validate_presence_of :body }
-
   it { should belong_to :question }
+
+  it { should validate_presence_of :body }
+  it { should validate_presence_of :question_id }
+
 
 end

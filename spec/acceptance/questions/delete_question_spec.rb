@@ -7,7 +7,7 @@ feature 'Delete question', %q{
 } do
 
   given(:author) { create(:user) }
-  given(:question) { create(:question, user:author)}
+  given(:question) { create(:question, user:author) }
 
   scenario "Question's author removes the question " do
     login(author)
@@ -26,7 +26,6 @@ feature 'Delete question', %q{
   end
 
   scenario "Non-authenticated user tries to remove the question" do
-    question
     visit question_path(question)
     expect(page).not_to have_link 'Delete'
   end
