@@ -79,6 +79,91 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe "GET #edit" do
+
+    let(:answer) { create(:answer, question:question, user:answer_author) }
+
+    before do
+      login(answer_author)
+      get :edit, id: answer, question_id:question.id
+    end
+
+    it 'assigns answer' do
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'renders edit template' do
+      expect(response).to render_template :edit
+    end
+
+  end
+
+
+  describe "PATCH #update" do
+
+    let(:answer) { create(:answer, question:question, user:answer_author) }
+
+    context 'valid' do
+      before do
+        login(answer_author)
+        patch :update, id: answer, answer: { body: 'No idea' }
+      end
+
+      it 'changes answer' do
+        answer.reload
+        expect(answer.body).to eq 'No idea'
+      end
+
+      it 'redirects to question' do
+        expect(response).to redirect_to question
+      end
+    end
+
+    context 'invalid' do
+      before do
+        login(answer_author)
+        patch :update, id: answer, answer: { body: nil }
+      end
+
+      it 'does not change answer' do
+        old_body = answer.body
+        answer.reload
+        expect(answer.body).to eq old_body
+      end
+
+      it 'render edit template' do
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'non-author' do
+      before do
+        login(question_author)
+        patch :update, id: answer, answer: { body: 'No idea' }
+      end
+
+      it 'does not change answer' do
+        old_body = answer.body
+        answer.reload
+        expect(answer.body).to eq old_body
+      end
+    end
+
+    context 'guest' do
+      before { patch :update, id: answer, answer: { body: 'No idea' } }
+
+      it 'does not change answer' do
+        old_body = answer.body
+        answer.reload
+        expect(answer.body).to eq old_body
+      end
+    end
+
+  end
+
+
+
+
   describe "DELETE #destroy" do
 
     let!(:answer) { create(:answer, question:question, user:answer_author) }

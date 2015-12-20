@@ -13,6 +13,7 @@
       <p><%= answer.body %></p>
       <% if user_signed_in? && current_user.id == author_id_of(answer) %>
         <p><%= link_to 'Delete answer', answer_path(answer), method: :delete %></p>
+        <p><%= link_to 'Edit answer', edit_answer_path(answer) %></p>
       <% end %>
       <hr>
     </div>

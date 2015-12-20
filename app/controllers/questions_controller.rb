@@ -29,10 +29,14 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Your question was successfully updated'
+    if (user_signed_in? && current_user.id == @question.user_id)
+      if @question.update(question_params)
+        redirect_to @question, notice: 'Your question was successfully updated'
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to @question, alert: 'You attempted an unauthorized action'
     end
   end
 
