@@ -21,14 +21,28 @@ feature 'Delete answer', %q{
     within('#answer-3') { click_on 'Delete answer' }
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)
-    (some_answers + some_more_answers + another_answer).each do |answer|
+    (some_answers + some_more_answers << another_answer).each do |answer|
       expect(page).to have_content(answer.body)
     end
-    expect(page).not_to have_content(answer_to_delete).body
+    expect(page).not_to have_content(answer_to_delete.body)
+    expect(page).to have_content('The answer was successfully deleted')
   end
 
-  scenario 'Question author tries to delete the answer'
-  scenario 'Third party tries to delete the answer'
-  scenario 'Unauthenticated user tries to delete an answer'
+  scenario 'Question author tries to delete the answer' do
+    login(question_author)
+    visit question_path(question)
+    within('#answer-3') { expect(page).not_to have_link 'Delete answer' }
+  end
+
+  scenario 'Third party tries to delete the answer' do
+    login(third_party)
+    visit question_path(question)
+    within('#answer-3') { expect(page).not_to have_link 'Delete answer' }
+  end
+
+  scenario 'Unauthenticated user tries to delete an answer' do
+    visit question_path(question)
+    within('#answer-3') { expect(page).not_to have_link 'Delete answer' }
+  end
 
 end

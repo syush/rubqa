@@ -6,11 +6,12 @@ RSpec.describe AnswersController, type: :controller do
   let(:answer_author) { create(:user) }
   let(:question) { create(:question, user:question_author) }
 
-  before { login(answer_author) }
-
   describe "GET #new" do
 
-    before { get :new, question_id: question.id }
+    before do
+      login(answer_author)
+      get :new, question_id: question.id
+    end
 
     it 'assigns new Answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -27,6 +28,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "POST #create" do
+
+    before { login(answer_author) }
+
     context 'valid' do
       it 'saves new question in DB' do
         attr = attributes_for(:answer)
@@ -75,5 +79,38 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe "DELETE #destroy" do
+
+    let!(:answer) { create(:answer, question:question, user:answer_author) }
+
+    context 'author' do
+      before { login(answer_author) }
+
+      it 'deletes answer from DB' do
+        expect { delete :destroy, id: answer }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question path' do
+        delete :destroy, id: answer
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'non-author' do
+      it 'does not delete the answer from DB' do
+        non_author = create(:user)
+        login(non_author)
+        expect { delete :destroy, id: answer }.not_to change(Answer, :count)
+      end
+
+    end
+
+    context 'guest' do
+      it 'does not delete the answer from DB' do
+        expect { delete :destroy, id: answer }.not_to change(Answer, :count)
+      end
+    end
+
+  end
 
 end

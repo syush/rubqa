@@ -19,6 +19,16 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    @answer = Answer.find(params[:id])
+    if (user_signed_in? && current_user == @answer.user)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'The answer was successfully deleted'
+    else
+      redirect_to question_path(@answer.question), alert: 'You attempted an unauthorized action'
+    end
+  end
+
   private
 
   # comment
