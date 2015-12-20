@@ -2,7 +2,8 @@
 <p><%= @question.body %></p>
 <p><%= link_to 'Reply', new_question_answer_path(@question) %></p>
 <% if user_signed_in? && current_user.id == author_id_of(@question) %>
-    <p></p><%= link_to 'Delete question', question_path(@question), method: :delete %></p>
+    <p><%= link_to 'Delete question', question_path(@question), method: :delete %></p>
+    <p><%= link_to 'Edit question', edit_question_path(@question) %></p>
 <% end %>
 <% unless @question.answers.empty? %>
   <hr>
