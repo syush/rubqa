@@ -6,7 +6,7 @@ RSpec.describe Question, type: :model do
   #   expect(question).not_to be_valid
   # end
 
-  it { should have_many :answers }
+  it { should have_many(:answers).dependent(:destroy) }
   it { should belong_to :user }
 
   it { should validate_presence_of :user_id }
