@@ -4,20 +4,22 @@
     <p><%= link_to 'Delete question', question_path(@question), method: :delete %></p>
     <p><%= link_to 'Edit question', edit_question_path(@question) %></p>
 <% end %>
-<% unless @question.answers.empty? %>
-  <hr>
-  <h2>Answers:</h2>
-  <% @question.answers.each_with_index do |answer, index| %>
-    <div id="answer-<%= index %>">
-      <p><%= answer.body %></p>
-      <% if user_signed_in? && current_user.id == author_id_of(answer) %>
-        <p><%= link_to 'Delete answer', answer_path(answer), method: :delete %></p>
-        <p><%= link_to 'Edit answer', edit_answer_path(answer) %></p>
-      <% end %>
-      <hr>
-    </div>
+<hr>
+<div id="answers">
+  <% unless @question.answers.empty? %>
+    <h2><%= @count %> answer(s):</h2>
+    <% @question.answers.each_with_index do |answer, index| %>
+      <div id="answer-<%= index %>">
+        <p><%= answer.body %></p>
+        <% if user_signed_in? && current_user.id == author_id_of(answer) %>
+          <p><%= link_to 'Delete answer', answer_path(answer), method: :delete %></p>
+          <p><%= link_to 'Edit answer', edit_answer_path(answer) %></p>
+        <% end %>
+        <hr>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
 <% if user_signed_in? %>
   <h3>Answer the question!</h3>
   <%= render 'answers/form' %>

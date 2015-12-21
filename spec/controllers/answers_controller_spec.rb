@@ -13,30 +13,31 @@ RSpec.describe AnswersController, type: :controller do
     context 'valid' do
       it 'saves new question in DB' do
         attr = attributes_for(:answer)
-        expect { post :create, question_id: question.id, answer: attr }.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question.id,
+                      answer: attr, format: :js }.to change(Answer, :count).by(1)
       end
 
       it 'redirects to show' do
         attr = attributes_for(:answer)
-        post :create, question_id: question.id, answer: attr
-        expect(response).to redirect_to question_path(question)
+        post :create, question_id: question.id, answer: attr, format: :js
+        expect(response).to render_template :create
       end
 
       it 'saves the correct text' do
         attr = attributes_for(:answer)
-        post :create, question_id: question.id, answer: attr
+        post :create, question_id: question.id, answer: attr, format: :js
         answered_question = Question.find(question.id)
         expect(answered_question.answers.first.body).to eq attr[:body]
       end
 
       it 'links with the correct question' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
+        post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
         answered_question = Question.find(question.id)
         expect(answered_question.answers.first.question.id).to eq question.id
       end
 
       it 'assigns the correct author' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
+        post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
         answered_question = Question.find(question.id)
         expect(answered_question.answers.first.user.id).to eq answer_author.id
       end
@@ -47,13 +48,14 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save new answer in DB' do
         attr = attributes_for(:invalid_answer)
         answer = build(:invalid_answer)
-        expect { post :create, question_id: question.id, answer: attr }.to_not change(Answer, :count)
+        expect { post :create, question_id: question.id,
+                      answer: attr, format: :js }.to_not change(Answer, :count)
       end
 
       it 'redirects to question' do
         attr = attributes_for(:invalid_answer)
-        post :create, question_id: question.id, answer: attr
-        expect(response).to redirect_to question_path(question)
+        post :create, question_id: question.id, answer: attr, format: :js
+        expect(response).to render_template :create
       end
     end
   end

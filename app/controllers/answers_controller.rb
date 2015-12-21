@@ -8,10 +8,8 @@ class AnswersController < ApplicationController
     @answer = Answer.new(answer_params)
     @answer.question = @question
     @answer.user = current_user
-    if @answer.save
-      redirect_to @question
-    else
-      redirect_to @question, alert: 'You entered an invalid answer'
+    unless @answer.save
+      flash[:alert] = 'You entered an invalid answer'
     end
   end
 

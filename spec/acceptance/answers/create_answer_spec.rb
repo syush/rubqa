@@ -9,7 +9,7 @@ feature 'Authenticated user creates an answer', %q{
   given(:user) {create(:user)}
   given(:question) { create(:question, user:user) }
 
-  scenario 'Authenticated user replies a question' do
+  scenario 'Authenticated user replies a question', js:true do
     login(user)
     visit question_path(question)
     fill_in 'Your answer:', with: 'I guess around 7 billion'

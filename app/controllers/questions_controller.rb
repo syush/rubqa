@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @count = @question.answers.count
   end
 
   def new
