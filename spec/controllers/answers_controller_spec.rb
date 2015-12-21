@@ -153,12 +153,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(answer_author) }
 
       it 'deletes answer from DB' do
-        expect { delete :destroy, id: answer }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, id: answer, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question path' do
-        delete :destroy, id: answer
-        expect(response).to redirect_to question_path(question)
+        delete :destroy, id: answer, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -166,14 +166,14 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not delete the answer from DB' do
         non_author = create(:user)
         login(non_author)
-        expect { delete :destroy, id: answer }.not_to change(Answer, :count)
+        expect { delete :destroy, id: answer, format: :js }.not_to change(Answer, :count)
       end
 
     end
 
     context 'guest' do
       it 'does not delete the answer from DB' do
-        expect { delete :destroy, id: answer }.not_to change(Answer, :count)
+        expect { delete :destroy, id: answer, format: :js }.not_to change(Answer, :count)
       end
     end
 

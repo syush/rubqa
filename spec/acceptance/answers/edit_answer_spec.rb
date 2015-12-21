@@ -18,7 +18,7 @@ feature 'Edit answer', %q{
   scenario 'Author edits their answer' do
     login(answer_author)
     visit question_path(question)
-    within('#answer-3') do
+    within("#answer-#{answer_to_edit.id}") do
       click_on 'Edit answer'
     end
     fill_in 'Your answer:', with: "I don't know"
@@ -37,7 +37,7 @@ feature 'Edit answer', %q{
   scenario 'Question author tries to edit an answer' do
     login(question_author)
     visit question_path(question)
-    within('#answer-3') do
+    within("#answer-#{answer_to_edit.id}") do
       expect(page).not_to have_link 'Edit answer'
     end
   end
@@ -45,14 +45,14 @@ feature 'Edit answer', %q{
   scenario 'Third party tries to edit an answer' do
     login(third_party)
     visit question_path(question)
-    within('#answer-3') do
+    within("#answer-#{answer_to_edit.id}") do
       expect(page).not_to have_link 'Edit answer'
     end
   end
 
   scenario 'Unauthenticated user tries to edit an answer' do
     visit question_path(question)
-    within('#answer-3') do
+    within("#answer-#{answer_to_edit.id}") do
       expect(page).not_to have_link 'Edit answer'
     end
   end

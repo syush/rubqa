@@ -1,7 +1,10 @@
 $("#answers").append(
-        "<p><%= @answer.body %></p>" +
-        '<p><%= link_to "Delete answer", answer_path(@answer), method: :delete %></p>' +
-        '<p><%= link_to "Edit answer", edit_answer_path(@answer) %></p><hr>'
+        '<div class="answer" id="answer-<%= @answer.id %>">' +
+          "<p><%= @answer.body %></p>" +
+          '<p><%= link_to "Delete answer", answer_path(@answer), method: :delete, remote: true %></p>' +
+          '<p><%= link_to "Edit answer", edit_answer_path(@answer) %></p>' +
+          '<hr>' +
+        '</div>'
 );
 $("#answers h2").html(
  "<%= @question.answers.count %> answer(s):"

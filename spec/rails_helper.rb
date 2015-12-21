@@ -58,6 +58,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include AcceptanceHelpers, type: :feature
+  config.include WaitForAjax, type: :feature
 
   config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
   config.before(:each) { DatabaseCleaner.strategy = :transaction }

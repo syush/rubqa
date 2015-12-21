@@ -16,6 +16,8 @@ feature 'Authenticated user creates an answer', %q{
     click_on 'Submit'
     expect(page).to have_content("I guess around 7 billion")
     expect(current_path).to eq question_path(question)
+    visit question_path(question)
+    expect(page).to have_content("I guess around 7 billion")
   end
 
   scenario 'Non-authenticated guest tries to reply a question' do
