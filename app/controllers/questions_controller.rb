@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
 
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -19,8 +20,9 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
+    @question.user = current_user
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your question is successfully created'
     else
       render :new
     end
@@ -35,8 +37,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if (user_signed_in? && current_user.id == @question.user_id)
+      @question.destroy
+      redirect_to questions_path, notice: 'The question was successfully deleted'
+    else
+      redirect_to questions_path, alert: 'You attempted an unauthorized action'
+    end
   end
 
   private

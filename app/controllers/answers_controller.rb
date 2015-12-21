@@ -1,6 +1,9 @@
 class AnswersController < ApplicationController
 
+  before_action :authenticate_user!, except: [:index, :show]
+
   def new
+    @question = Question.find(params[:question_id])
     @answer = Answer.new
   end
 
