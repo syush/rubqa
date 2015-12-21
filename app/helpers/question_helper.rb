@@ -1,5 +1,5 @@
 module QuestionHelper
   def author_id_of(question)
-    question.user.id
+    question.user_id
   end
 end
