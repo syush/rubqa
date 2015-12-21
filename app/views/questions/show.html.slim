@@ -1,0 +1,19 @@
+h1= @question.title
+p= @question.body
+- if user_signed_in? && current_user.id == author_id_of(@question)
+  p= link_to 'Delete question', question_path(@question), method: :delete
+  p= link_to 'Edit question', edit_question_path(@question)
+hr
+#answers
+  - unless @question.answers.empty?
+    h2="#{@count} answer(s):"
+    - @question.answers.each do |answer|
+      .answer id="answer-#{answer.id}"
+        p= answer.body
+        - if user_signed_in? && current_user.id == author_id_of(answer)
+          p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+          p= link_to 'Edit answer', edit_answer_path(answer)
+        hr
+- if user_signed_in?
+  h3 Answer the question!
+  == render 'answers/form'

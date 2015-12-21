@@ -1,0 +1,6 @@
+= link_to 'Ask question', new_question_path
+hr
+- @questions.each do |question|
+  h3= question.title
+  p= truncate( question.body, length:100)
+  hr

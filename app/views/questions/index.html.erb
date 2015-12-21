@@ -1,7 +1,0 @@
-<%= link_to 'Ask question', new_question_path %>
-<hr>
-<% @questions.each do |question|%>
-<h3><%= question.title %></h3>
-<p><%= truncate( question.body, length:100) %></p>
-<hr>
-<% end %>
