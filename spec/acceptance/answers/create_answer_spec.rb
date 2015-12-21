@@ -12,7 +12,6 @@ feature 'Authenticated user creates an answer', %q{
   scenario 'Authenticated user replies a question' do
     login(user)
     visit question_path(question)
-    click_on 'Reply'
     fill_in 'Your answer:', with: 'I guess around 7 billion'
     click_on 'Submit'
     expect(page).to have_content("I guess around 7 billion")
@@ -21,8 +20,6 @@ feature 'Authenticated user creates an answer', %q{
 
   scenario 'Non-authenticated guest tries to reply a question' do
     visit question_path(question)
-    click_on 'Reply'
-    expect(page).to have_content(I18n.t('devise.failure.unauthenticated'))
     expect(page).to_not have_content('Your answer:')
   end
 

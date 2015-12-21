@@ -3,11 +3,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, only: [:edit, :update, :destroy]
 
-  def new
-    @question = Question.find(params[:question_id])
-    @answer = Answer.new
-  end
-
   def create
     @question = Question.find(params[:question_id])
     @answer = Answer.new(answer_params)
@@ -16,7 +11,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render :new
+      redirect_to @question, alert: 'You entered an invalid answer'
     end
   end
 

@@ -6,27 +6,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:answer_author) { create(:user) }
   let(:question) { create(:question, user:question_author) }
 
-  describe "GET #new" do
-
-    before do
-      login(answer_author)
-      get :new, question_id: question.id
-    end
-
-    it 'assigns new Answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'renders show template' do
-      expect(response).to render_template :new
-    end
-
-    it 'assigns new answer to the right question' do
-      expect(assigns(:question).id).to eq question.id
-    end
-
-  end
-
   describe "POST #create" do
 
     before { login(answer_author) }
@@ -71,10 +50,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question.id, answer: attr }.to_not change(Answer, :count)
       end
 
-      it 'renders new template' do
+      it 'redirects to question' do
         attr = attributes_for(:invalid_answer)
         post :create, question_id: question.id, answer: attr
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
