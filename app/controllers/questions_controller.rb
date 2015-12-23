@@ -16,9 +16,6 @@ class QuestionsController < ApplicationController
     @question = Question.new
   end
 
-  def edit
-  end
-
   def create
     @question = Question.new(question_params)
     @question.user = current_user
@@ -31,10 +28,14 @@ class QuestionsController < ApplicationController
 
   def update
     if (user_signed_in? && current_user.id == @question.user_id)
-      if @question.update(question_params)
-        redirect_to @question, notice: 'Your question was successfully updated'
-      else
-        render :edit
+      respond_to do |format|
+        if @question.update(question_params)
+          format.html { redirect_to @question, notice: 'Your question was successfully updated' }
+          format.json { render json: { question:@question, status_ok: true } }
+        else
+          format.html { redirect_to @question, alert: 'The question was not updated' }
+          format.json { render json: { errors:@question.errors.full_messages, status_ok: false } }
+        end
       end
     else
       redirect_to @question, alert: 'You attempted an unauthorized action'

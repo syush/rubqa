@@ -1,8 +1,14 @@
-h1= @question.title
-p= @question.body
+#errors
+h1.question-title= @question.title
+p.question-body= @question.body
+.question-form.form-container
+  == render 'form', remote:true, format: :json
+  button.cancel-link Cancel
 - if user_signed_in? && current_user.id == author_id_of(@question)
-  p= link_to 'Delete question', question_path(@question), method: :delete
-  p= link_to 'Edit question', edit_question_path(@question)
+  p
+    span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
+    ="  |  "
+    span.edit-question-link= link_to 'Edit question', '#'
 hr
 #answers
   - unless @question.answers.empty?
@@ -11,9 +17,10 @@ hr
       .answer id="answer-#{answer.id}"
         p= answer.body
         - if user_signed_in? && current_user.id == author_id_of(answer)
-          p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-          p= link_to 'Edit answer', edit_answer_path(answer)
+          p.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+          p.edit-answer-link= link_to 'Edit answer', edit_answer_path(answer)
         hr
 - if user_signed_in?
-  h3 Answer the question!
-  == render 'answers/form'
+  .new-answer-form.form-container
+    h3 Answer the question!
+    == render 'answers/form'

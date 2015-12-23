@@ -1,6 +1,6 @@
-= form_for @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body, 'Text'
-  = f.text_field :body
-  = f.submit 'Submit'
+= form_for @question, remote:remote, format:format do |f|
+  p= f.label :title
+  p= f.text_field :title
+  p= f.label :body, 'Text'
+  p= f.text_field :body
+  p= f.submit 'Submit'
