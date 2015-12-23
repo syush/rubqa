@@ -18,13 +18,23 @@ feature 'View questions', %q{
   end
 
   scenario 'Authenticated user sees the list of questions' do
-    user = create(:user)
     login(user)
     visit questions_path
     questions.each do |question|
       expect(page).to have_content(question.title)
       expect(page).to have_content(question.body[0..50])
     end
+  end
+
+  scenario 'User selects a question from the list' do
+    login(user)
+    visit questions_path
+    within "#question-#{questions[2].id}" do
+      click_on questions[2].title
+    end
+    expect(current_path).to eq question_path(questions[2])
+    expect(page).to have_content(questions[2].title)
+    expect(page).to have_content(questions[2].body)
   end
 
 end
