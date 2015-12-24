@@ -3,7 +3,7 @@ h1.question-title= @question.title
 p.question-body= @question.body
 .question-form.form-container
   == render 'form', remote:true, format: :json
-  button.cancel-link Cancel
+  button.question-cancel Cancel
 - if user_signed_in? && current_user.id == author_id_of(@question)
   p
     span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
@@ -15,12 +15,23 @@ hr
     h2="#{@count} answer(s):"
     - @question.answers.each do |answer|
       .answer id="answer-#{answer.id}"
-        p= answer.body
+        p.answer-body= answer.body
+        .answer-form.form-container
+          = form_for answer, remote: true, format: :json do |f|
+            p= f.label :body, 'Your answer:'
+            p= f.text_area :body
+            p= f.submit 'Submit'
+          button.answer-cancel Cancel
         - if user_signed_in? && current_user.id == author_id_of(answer)
-          p.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-          p.edit-answer-link= link_to 'Edit answer', edit_answer_path(answer)
+          p
+            span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+            ="  |  "
+            span.edit-answer-link= link_to 'Edit answer', '#'
         hr
 - if user_signed_in?
   .new-answer-form.form-container
     h3 Answer the question!
-    == render 'answers/form'
+    = form_for [@question, @answer], remote: true do |f|
+      = f.label :body, 'Your answer:'
+      = f.text_area :body
+      = f.submit 'Submit'

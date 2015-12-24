@@ -23,6 +23,7 @@ feature 'Edit question', %q{
     expect(page).to have_content answer.body
     expect(page).not_to have_content question.title
     expect(page).not_to have_content question.body
+    expect(page).to have_content('Your answer:')
   end
 
   scenario 'Question author edits the question to make it invalid', js:true do
@@ -47,6 +48,7 @@ feature 'Edit question', %q{
     expect(page).to have_content question.body
     expect(page).to have_content question.title
     expect(page).not_to have_css 'form.edit_question'
+    expect(page).to have_content('Your answer:')
   end
 
   scenario 'Non-author tries to edit the question'  do

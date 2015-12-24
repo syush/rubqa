@@ -11,15 +11,16 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
-  def edit
-  end
-
   def update
     if (user_signed_in? && current_user.id == @answer.user_id)
-      if @answer.update(answer_params)
-        redirect_to @answer.question, notice: 'Your answer was successfully updated'
-      else
-        render :edit
+      respond_to do |format|
+        if @answer.update(answer_params)
+          format.html { redirect_to @answer.question, notice: 'Your answer was successfully updated' }
+          format.json { render json: {body:@answer.body, status_ok:true} }
+        else
+          format.html { redirect_to @answer.question, alert: 'The answer was not updated' }
+          format.json { render json: {errors:@answer.errors.full_messages, status_ok:false} }
+        end
       end
     else
       redirect_to @answer.question, alert: 'You attempted and unauthorized action'
