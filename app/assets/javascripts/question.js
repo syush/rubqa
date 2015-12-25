@@ -24,18 +24,17 @@ $(document).ready(function() {
         $('.question-form form')[0].reset();
     });
 
-    $('form.edit_question').bind('ajax:success',
-      function(e, data, status, xhr) {
-          $('#errors').html('');
-          if (data.status_ok) {
-              $('.question-title').html(data.question.title);
-              $('.question-body').html(data.question.body);
-              question_toggle();
-              $('.new-answer-form').show();
-          } else {
-              $.each(data.errors, function(index, message) {
-                  $('#errors').append(message + "<br>");
-              })
-          }
-      });
+    $('form.edit_question').bind('ajax:success', function(e, data, status, xhr) {
+        $('.question-title').html(data.question.title);
+        $('.question-body').html(data.question.body);
+        question_toggle();
+        $('.new-answer-form').show();
+    }).bind('ajax:error', function(e, xhr, status, error) {
+        errors = $.parseJSON(xhr.responseText);
+        $.each(errors, function(index, message) {
+            $('#errors').append(message + "<br>");
+        });
+    }).bind('ajax:before', function() {
+        $('#errors').html('');
+    });
 });

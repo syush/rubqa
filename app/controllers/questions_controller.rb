@@ -31,10 +31,10 @@ class QuestionsController < ApplicationController
       respond_to do |format|
         if @question.update(question_params)
           format.html { redirect_to @question, notice: 'Your question was successfully updated' }
-          format.json { render json: { question:@question, status_ok: true } }
+          format.json { render json: {question:@question} }
         else
           format.html { redirect_to @question, alert: 'The question was not updated' }
-          format.json { render json: { errors:@question.errors.full_messages, status_ok: false } }
+          format.json { render json: @question.errors.full_messages, status: :unprocessable_entity }
         end
       end
     else

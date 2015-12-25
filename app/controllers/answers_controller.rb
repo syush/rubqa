@@ -16,10 +16,10 @@ class AnswersController < ApplicationController
       respond_to do |format|
         if @answer.update(answer_params)
           format.html { redirect_to @answer.question, notice: 'Your answer was successfully updated' }
-          format.json { render json: {body:@answer.body, status_ok:true} }
+          format.json { render json: {body:@answer.body} }
         else
           format.html { redirect_to @answer.question, alert: 'The answer was not updated' }
-          format.json { render json: {errors:@answer.errors.full_messages, status_ok:false} }
+          format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
         end
       end
     else

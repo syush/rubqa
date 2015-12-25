@@ -31,17 +31,16 @@ $(document).ready(function() {
         $('#' + id + ' .answer-form form')[0].reset();
     });
 
-    $('form.edit_answer').bind('ajax:success',
-        function(e, data, status, xhr) {
-            var id = $($($(this).parents()[0]).parents()[0]).attr('id');
-            $('#errors').html('');
-            if (data.status_ok) {
-                $('#' + id + ' .answer-body').html(data.body);
-                answer_toggle_back(id);
-            } else {
-                $.each(data.errors, function(index, message) {
-                    $('#errors').append(message + "<br>");
-                })
-            }
-        });
+    $('form.edit_answer').bind('ajax:success', function(e, data, status, xhr) {
+        var id = $($($(this).parents()[0]).parents()[0]).attr('id');
+        $('#' + id + ' .answer-body').html(data.body);
+        answer_toggle_back(id);
+    }).bind('ajax:error', function(e, xhr, status, error) {
+        errors = $.parseJSON(xhr.responseText);
+        $.each(errors, function(index, message) {
+            $('#errors').append(message + "<br>");
+        })
+    }).bind('ajax:before', function() {
+        $('#errors').html('');
+    });
 });
