@@ -37,4 +37,16 @@ $(document).ready(function() {
     }).bind('ajax:before', function() {
         $('#errors').html('');
     });
+
+    PrivatePub.subscribe("/questions", function(data, channel) {
+        var added_html =
+            '<div class="question" id="question-' + String(data.question.id) +'">' +
+              '<a href="/questions/' + String(data.question.id) + '">' +
+                 '<h3>' + data.question.title + '</h3>' +
+              '</a>' +
+              '<p>' + data.question.body.substring(0, 100) + '</p>' +
+              '<hr>' +
+             '</div>';
+        $("body").append(added_html);
+    });
 });
