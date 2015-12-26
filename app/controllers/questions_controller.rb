@@ -20,7 +20,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
-      PrivatePub.publish_to "/questions", question:@question
+      PrivatePub.publish_to "/questions", question:@question, action:'create'
       redirect_to @question, notice: 'Your question is successfully created'
     else
       render :new
@@ -46,6 +46,7 @@ class QuestionsController < ApplicationController
   def destroy
     if (user_signed_in? && current_user.id == @question.user_id)
       @question.destroy
+      PrivatePub.publish_to "/questions", question_id:@question.id, action:'destroy'
       redirect_to questions_path, notice: 'The question was successfully deleted'
     else
       redirect_to questions_path, alert: 'You attempted an unauthorized action'
