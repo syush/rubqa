@@ -31,6 +31,7 @@ class QuestionsController < ApplicationController
     if (user_signed_in? && current_user.id == @question.user_id)
       respond_to do |format|
         if @question.update(question_params)
+          PrivatePub.publish_to "/questions", question:@question, action:'update'
           format.html { redirect_to @question, notice: 'Your question was successfully updated' }
           format.json { render json: {question:@question} }
         else

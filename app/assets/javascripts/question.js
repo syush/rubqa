@@ -43,13 +43,17 @@ $(document).ready(function() {
             case 'create':
                 $("body").append(
                     '<div class="question" id="question-' + String(data.question.id) + '">' +
-                    '<a href="/questions/' + String(data.question.id) + '">' +
-                    '<h3>' + data.question.title + '</h3>' +
-                    '</a>' +
-                    '<p>' + data.question.body.substring(0, 100) + '</p>' +
-                    '<hr>' +
+                      '<a href="/questions/' + String(data.question.id) + '">' +
+                        '<h3>' + data.question.title + '</h3>' +
+                      '</a>' +
+                      '<p>' + data.question.body.substring(0, 100) + '</p>' +
+                      '<hr>' +
                     '</div>'
                 );
+                break;
+            case 'update':
+                $("#question-" + data.question.id + " a h3").html(data.question.title);
+                $("#question-" + data.question.id + " p").html(data.question.body);
                 break;
             case 'destroy':
                 $("#question-" + data.question_id).remove();
