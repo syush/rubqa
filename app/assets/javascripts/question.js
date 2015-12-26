@@ -38,6 +38,13 @@ $(document).ready(function() {
         $('#errors').html('');
     });
 
+    question_id = window.location.pathname.split('/questions/').pop().split('/').shift();
+    PrivatePub.subscribe('/questions/' + question_id + '/answers', function(data, channel) {
+        if (data.action == 'update') {
+            $("#answer-" + data.answer.id + " .answer-body").html(data.answer.body);
+        }
+    });
+
     PrivatePub.subscribe("/questions", function(data, channel) {
         switch(data.action) {
             case 'create':
@@ -59,4 +66,6 @@ $(document).ready(function() {
                 $("#question-" + data.question_id).remove();
         }
     });
+
+
 });

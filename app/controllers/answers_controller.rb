@@ -15,6 +15,7 @@ class AnswersController < ApplicationController
     if (user_signed_in? && current_user.id == @answer.user_id)
       respond_to do |format|
         if @answer.update(answer_params)
+          PrivatePub.publish_to "/questions/#{@answer.question.id}/answers", answer:@answer, action:'update'
           format.html { redirect_to @answer.question, notice: 'Your answer was successfully updated' }
           format.json { render json: {body:@answer.body} }
         else
