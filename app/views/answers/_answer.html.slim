@@ -1,0 +1,14 @@
+.answer id="answer-#{answer.id}"
+  p.answer-body= answer.body
+  .answer-form.form-container
+    = form_for answer, remote: true, format: :json do |f|
+      p= f.label :body, 'Your answer:'
+      p= f.text_area :body
+      p= f.submit 'Submit'
+    button.answer-cancel Cancel
+  - if with_links
+    p
+      span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+      ="  |  "
+      span.edit-answer-link= link_to 'Edit answer', '#'
+  hr

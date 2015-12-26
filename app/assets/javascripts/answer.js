@@ -8,7 +8,7 @@ function answer_toggle_back(id) {
 $(document).ready(function() {
     $('.answer-form').hide();
 
-    $('.edit-answer-link').click(function(){
+    $(document).on('click', '.edit-answer-link', function(){
         var id = $($($(this).parents()[0]).parents()[0]).attr('id');
         $('.answer-body').show();
         $('.answer-form').hide();
@@ -24,14 +24,14 @@ $(document).ready(function() {
         $('#errors').html('');
     });
 
-    $('.answer-cancel').click(function(){
+    $(document).on('click', '.answer-cancel', function(){
         var id = $($($(this).parents()[0]).parents()[0]).attr('id');
         $('#errors').html('');
         answer_toggle_back(id);
         $('#' + id + ' .answer-form form')[0].reset();
     });
 
-    $('form.edit_answer').bind('ajax:success', function(e, data, status, xhr) {
+    $(document).on('ajax:success', 'form.edit_answer', function(e, data, status, xhr) {
         var id = $($($(this).parents()[0]).parents()[0]).attr('id');
         $('#' + id + ' .answer-body').html(data.body);
         answer_toggle_back(id);

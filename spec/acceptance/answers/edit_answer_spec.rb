@@ -63,6 +63,25 @@ feature 'Edit answer', %q{
     expect(page).to have_content('Your answer:')
   end
 
+  scenario 'User adds an answer and edits it without page reload', js:true do
+    login(third_party)
+    visit question_path(question)
+    fill_in 'Your answer:', with: 'bad answer'
+    click_on 'Submit'
+    wait_for_ajax
+    within all('.answer').last do
+      click_on 'Edit answer'
+    end
+    fill_in 'Your answer:', with: 'good answer'
+    click_on 'Submit'
+    wait_for_ajax
+    expect(page).to have_content 'good answer'
+    expect(page).not_to have_content 'bad answer'
+    (some_answers + some_more_answers << another_answer << answer_to_edit).each do |answer|
+      expect(page).to have_content(answer.body)
+    end
+  end
+
   scenario 'Question author tries to edit an answer' do
     login(question_author)
     visit question_path(question)
