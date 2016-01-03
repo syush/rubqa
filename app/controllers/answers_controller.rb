@@ -43,6 +43,8 @@ class AnswersController < ApplicationController
     if (user_signed_in? && current_user.id == @question.user_id)
       @question.best_answer = @answer
       @question.save
+    else
+      redirect_to @answer.question, alert: 'You attempted and unauthorized action'
     end
   end
 
