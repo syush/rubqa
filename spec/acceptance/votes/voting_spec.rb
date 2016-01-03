@@ -8,7 +8,7 @@ feature 'Voting', %q{
 
 
   given(:question_author) { create(:user) }
-  given(:answer_authors) { create_list(:user, 3) }
+  given(:answer_authors) { create_list(:user, 5) }
   given(:voters) { create_list(:user, 10) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user:question_author) }
@@ -43,7 +43,7 @@ feature 'Voting', %q{
       end
     end
     [0,4].each do |i|
-      within "#answer-#{answer[i].id}" do
+      within "#answer-#{answers[i].id}" do
         click_on "Dislike"
       end
     end
@@ -88,6 +88,7 @@ feature 'Voting', %q{
       end
       click_on 'Log out'
     end
+    visit question_path(question)
     within("#answer-#{answers[2].id}") do
       expect(page).to have_content "Rating: -2"
       expect(page).not_to have_link 'Like'
