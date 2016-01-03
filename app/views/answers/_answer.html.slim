@@ -1,5 +1,7 @@
 .answer id="answer-#{answer.id}"
-  p.best-answer= is_best?(answer) ? "Best answer:" : ""
+  p.best-and-rating
+    span.best-answer= is_best?(answer) ? "Best answer | " : ""
+    span.rating= "Rating: #{answer.rating}"
   p.answer-body= answer.body
   .answer-form.form-container
     = form_for answer, remote: true, format: :json do |f|
@@ -16,4 +18,16 @@
       - if can_change
         ="  |  "
       span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
+  p.votes
+    - if user_signed_in? && !answer.voted(current_user) && !i_am_author_of(answer)
+      span.like-link= link_to 'Like', '#'
+      ="  |  "
+      span.dislike-link= link_to 'Dislike', '#'
+    - if user_signed_in? && answer.voted(current_user)
+      - if answer.get_vote(current_user)
+        span.current-vote You like this answer
+      - else
+        span.current-vote You dislike this answer
+      ="  |  "
+      span.vote-cancel-link= link_to 'Cancel vote', '#'
   hr
