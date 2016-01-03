@@ -1,11 +1,11 @@
 
 <% publish_to "/questions/#{@question.id}/answers" do %>
-  $("#answers").append( '<%= j render @answer, with_links:true %>' );
+  $("#answers").append( '<%= j render @answer, can_change:true, can_select_best:false %>' );
   userID = (" ;" + document.cookie).split("user_id=")[1].split(';').shift();
   if (Boolean(<%= !user_signed_in? %>) || (parseInt(userID) != <%= current_user.id %>)) {
     $("#answer-<%=@answer.id%> .links").remove();
   }
-  $("#answers h2").html(
+  $("#count h2").html(
     "<%= @question.answers.count %> answer(s):"
   );
   $("#answer-<%=@answer.id%> .answer-form").hide();

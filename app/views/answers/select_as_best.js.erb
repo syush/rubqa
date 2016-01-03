@@ -1,0 +1,4 @@
+$("#answer-<%= @answer.id %>").remove();
+$(".best-answer").hide();
+$("#answers").prepend( '<%= j render @answer, can_change:(author_id_of(@answer) == current_user.id), can_select_best:false %>' );
+$("#answer-<%=@answer.id%> .answer-form").hide();

@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :load_answer, only: [:edit, :update, :destroy]
+  before_action :load_answer, only: [:edit, :update, :destroy, :select_as_best]
 
   def create
     @question = Question.find(params[:question_id])
@@ -35,6 +35,14 @@ class AnswersController < ApplicationController
       @count = @answer.question.answers.count
     else
       redirect_to @answer.question, alert: 'You attempted and unauthorized action'
+    end
+  end
+
+  def select_as_best
+    @question = @answer.question
+    if (user_signed_in? && current_user.id == @question.user_id)
+      @question.best_answer = @answer
+      @question.save
     end
   end
 

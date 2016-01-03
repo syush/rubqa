@@ -10,11 +10,14 @@ p.question-body= @question.body
     ="  |  "
     span.edit-question-link= link_to 'Edit question', '#'
 hr
+#count
+  h2="#{@count} answer(s):" unless @question.answers.empty?
 #answers
-  - unless @question.answers.empty?
-    h2="#{@count} answer(s):"
-    - @question.answers.each do |answer|
-      = render answer, with_links: user_signed_in? && current_user.id == author_id_of(answer)
+  - sorted_answers = @question.best_answer ? [@question.best_answer] + (@question.answers - [@question.best_answer]) : @question.answers
+  - sorted_answers.each do |answer|
+    - can_change = user_signed_in? && current_user.id == author_id_of(answer)
+    - can_select_best = user_signed_in? && current_user.id == author_id_of(@question)
+    = render answer, can_change: can_change, can_select_best: can_select_best
 - if user_signed_in?
   .new-answer-form.form-container
     h3 Answer the question!

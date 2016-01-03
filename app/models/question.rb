@@ -1,7 +1,7 @@
 class Question < ActiveRecord::Base
 
   has_many :answers, dependent: :destroy
-  has_one :best_answer, class_name: 'Answer', dependent: :destroy
+  belongs_to :best_answer, class_name: 'Answer'
   belongs_to :user
 
   validates :user_id, presence: true
