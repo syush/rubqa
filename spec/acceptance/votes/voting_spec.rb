@@ -27,8 +27,8 @@ feature 'Voting', %q{
         expect(page).not_to have_content "You dislike this answer"
         expect(page).not_to have_content "You like this answer"
         expect(page).to have_content "Rating: 0"
-        expect(page).to have_link "Like"
-        expect(page).to have_link "Dislike"
+        expect(page).to have_button "Like"
+        expect(page).to have_button "Dislike"
         expect(page).not_to have_link "Cancel vote"
       end
     end
@@ -54,8 +54,8 @@ feature 'Voting', %q{
         expect(page).not_to have_content "You dislike this answer"
         expect(page).to have_content "Rating: 1"
         expect(page).to have_link "Cancel vote"
-        expect(page).not_to have_link "Like"
-        expect(page).not_to have_link "Dislike"
+        expect(page).not_to have_button "Like"
+        expect(page).not_to have_button "Dislike"
       end
     end
     [0,4].each do |i|
@@ -64,22 +64,22 @@ feature 'Voting', %q{
         expect(page).not_to have_content "You like this answer"
         expect(page).to have_content "Rating: -1"
         expect(page).to have_link "Cancel vote"
-        expect(page).not_to have_link "Like"
-        expect(page).not_to have_link "Dislike"
+        expect(page).not_to have_button "Like"
+        expect(page).not_to have_button "Dislike"
       end
     end
     within "#answer-#{answers[2].id}" do
       expect(page).not_to have_content "You dislike this answer"
       expect(page).not_to have_content "You like this answer"
       expect(page).to have_content "Rating: 0"
-      expect(page).to have_link "Like"
-      expect(page).to have_link "Dislike"
+      expect(page).to have_button "Like"
+      expect(page).to have_button "Dislike"
       expect(page).not_to have_link "Cancel vote"
     end
 
   end
 
-  scenario 'Multiple voters vote for and against an answer' do
+  scenario 'Multiple voters vote for and against an answer', js:true do
     voters.each_with_index do |voter, i|
       login(voter)
       visit question_path(question)
@@ -91,8 +91,8 @@ feature 'Voting', %q{
     visit question_path(question)
     within("#answer-#{answers[2].id}") do
       expect(page).to have_content "Rating: -2"
-      expect(page).not_to have_link 'Like'
-      expect(page).not_to have_link 'Dislike'
+      expect(page).not_to have_button 'Like'
+      expect(page).not_to have_button 'Dislike'
     end
   end
 
@@ -116,8 +116,8 @@ feature 'Voting', %q{
         expect(page).not_to have_content "You dislike this answer"
         expect(page).to have_content "Rating: 1"
         expect(page).to have_link "Cancel vote"
-        expect(page).not_to have_link "Like"
-        expect(page).not_to have_link "Dislike"
+        expect(page).not_to have_button "Like"
+        expect(page).not_to have_button "Dislike"
       end
     end
     [0,4].each do |i|
@@ -126,16 +126,16 @@ feature 'Voting', %q{
         expect(page).not_to have_content "You like this answer"
         expect(page).to have_content "Rating: -1"
         expect(page).to have_link "Cancel vote"
-        expect(page).not_to have_link "Like"
-        expect(page).not_to have_link "Dislike"
+        expect(page).not_to have_button "Like"
+        expect(page).not_to have_button "Dislike"
       end
     end
     within "#answer-#{answers[2].id}" do
       expect(page).not_to have_content "You dislike this answer"
       expect(page).not_to have_content "You like this answer"
       expect(page).to have_content "Rating: 0"
-      expect(page).to have_link "Like"
-      expect(page).to have_link "Dislike"
+      expect(page).to have_button "Like"
+      expect(page).to have_button "Dislike"
     end
   end
 
@@ -143,12 +143,12 @@ feature 'Voting', %q{
     login(answer_authors[1])
     visit question_path(question)
     within("#answer-#{answers[0].id}") do
-      expect(page).to have_link "Like"
-      expect(page).to have_link "Dislike"
+      expect(page).to have_button "Like"
+      expect(page).to have_button "Dislike"
     end
     within("#answer-#{answers[1].id}") do
-      expect(page).not_to have_link "Like"
-      expect(page).not_to have_link "Dislike"
+      expect(page).not_to have_button "Like"
+      expect(page).not_to have_button "Dislike"
       expect(page).not_to have_link "Cancel vote"
       expect(page).not_to have_content "You dislike this answer"
       expect(page).not_to have_content "You like this answer"
@@ -157,8 +157,8 @@ feature 'Voting', %q{
 
   scenario 'Guest tries to vote' do
     visit question_path(question)
-    expect(page).not_to have_link "Like"
-    expect(page).not_to have_link "Dislike"
+    expect(page).not_to have_button "Like"
+    expect(page).not_to have_button "Dislike"
     expect(page).not_to have_link "Cancel vote"
     expect(page).not_to have_content "You dislike this answer"
     expect(page).not_to have_content "You like this answer"
@@ -180,8 +180,8 @@ feature 'Voting', %q{
       expect(page).not_to have_content "You dislike this answer"
       expect(page).not_to have_content "You like this answer"
       expect(page).to have_content "Rating: 0"
-      expect(page).to have_link "Like"
-      expect(page).to have_link "Dislike"
+      expect(page).to have_button "Like"
+      expect(page).to have_button "Dislike"
       expect(page).not_to have_link "Cancel vote"
     end
   end

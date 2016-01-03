@@ -20,9 +20,14 @@
       span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
   p.votes
     - if user_signed_in? && !answer.voted(current_user) && !i_am_author_of(answer)
-      span.like-link= link_to 'Like', '#'
-      ="  |  "
-      span.dislike-link= link_to 'Dislike', '#'
+      table
+        tr
+          td.like-button=    form_for [answer, Vote.new], remote: true, format: :js do |f|
+            =                  f.hidden_field :vote_value, value:true
+            =                  f.submit 'Like'
+          td.dislike-button= form_for [answer, Vote.new], remote: true, format: :js do |f|
+            =                  f.hidden_field :vote_value, value: false
+            =                  f.submit 'Dislike'
     - if user_signed_in? && answer.voted(current_user)
       - vote = answer.get_vote(current_user)
       span.current-vote= vote.vote_value ? "You like this answer" : "You dislike this answer"
