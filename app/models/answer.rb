@@ -20,7 +20,7 @@ class Answer < ActiveRecord::Base
   end
 
   def get_vote(user)
-    votes.each { |v| return v.vote_value if user.id == v.user_id }
+    votes.each { |v| return v if user.id == v.user_id }
   end
 
 end

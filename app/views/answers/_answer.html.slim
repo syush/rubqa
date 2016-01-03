@@ -24,10 +24,8 @@
       ="  |  "
       span.dislike-link= link_to 'Dislike', '#'
     - if user_signed_in? && answer.voted(current_user)
-      - if answer.get_vote(current_user)
-        span.current-vote You like this answer
-      - else
-        span.current-vote You dislike this answer
+      - vote = answer.get_vote(current_user)
+      span.current-vote= vote.vote_value ? "You like this answer" : "You dislike this answer"
       ="  |  "
-      span.vote-cancel-link= link_to 'Cancel vote', '#'
+      span.vote-cancel-link= link_to 'Cancel vote', vote_path(vote), method: :delete, remote: true
   hr
