@@ -5,5 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable
 
   has_many :questions
+  has_many :votes, dependent: :destroy
 
 end
