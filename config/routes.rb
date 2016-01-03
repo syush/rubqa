@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     resources :answers, shallow: true
   end
   get 'answers/:id/select_as_best' => 'answers#select_as_best', as: 'select_as_best_answer'
+  get 'answers/:id/vote_for' => 'votes#create_for', as: 'vote_for'
+  get 'answers/:id/vote_against' => 'votes#create_against', as: 'vote_against'
+  get 'answers/:id/cancel_vote' => 'votes#destroy', as: 'cancel_vote'
   root to: 'questions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
