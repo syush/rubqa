@@ -50,7 +50,6 @@ class AnswersController < ApplicationController
 
   private
 
-  # comment
   def answer_params
     params.require(:answer).permit(:body)
   end

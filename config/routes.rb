@@ -2,12 +2,11 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :questions do
-    resources :answers, shallow: true
+    resources :answers, shallow: true do
+      resources :votes, shallow: true, only: [:create, :destroy]
+    end
   end
   get 'answers/:id/select_as_best' => 'answers#select_as_best', as: 'select_as_best_answer'
-  get 'answers/:id/vote_for' => 'votes#create_for', as: 'vote_for'
-  get 'answers/:id/vote_against' => 'votes#create_against', as: 'vote_against'
-  get 'answers/:id/cancel_vote' => 'votes#destroy', as: 'cancel_vote'
   root to: 'questions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
