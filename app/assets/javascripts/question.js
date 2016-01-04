@@ -38,7 +38,7 @@ $(document).ready(function() {
         $('#errors').html('');
     });
 
-    question_id = window.location.pathname.split('/questions/').pop().split('/').shift();
+    question_id = window.location.pathname.match( /\/questions\/(\d*)\// )[1];
     PrivatePub.subscribe('/questions/' + question_id + '/answers', function(data, channel) {
         if (data.action == 'update') {
             $("#answer-" + data.answer.id + " .answer-body").html(data.answer.body);
