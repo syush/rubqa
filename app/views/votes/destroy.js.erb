@@ -5,4 +5,6 @@ $("#answer-<%= @answer.id %> .votes").html(
       '<td class="dislike-button"> <%= render 'votes/form', answer:@answer, like:false %></td>' +
     '</tr>' +
   '</table>');
-$("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
+<% publish_to "/questions/#{@answer.question.id}/answers" do %>
+  $("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
+<% end %>
