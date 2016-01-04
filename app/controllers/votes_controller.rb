@@ -18,6 +18,7 @@ class VotesController < ApplicationController
 
   def destroy
     @vote = Vote.find(params[:id])
+    @answer = @vote.answer
     if current_user.id == @vote.user_id
       unless @vote.destroy
         redirect_to @answer.question, alert: 'Unable to remove vote'

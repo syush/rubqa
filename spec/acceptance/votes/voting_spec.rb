@@ -165,7 +165,7 @@ feature 'Voting', %q{
     expect(page).to have_content "Rating: 0"
   end
 
-  scenario 'Voter cancels his vote', js:true do
+  scenario 'Voter cancels his vote and votes again', js:true do
     login another_user
     visit question_path(question)
     within "#answer-#{answers[1].id}" do
@@ -183,7 +183,15 @@ feature 'Voting', %q{
       expect(page).to have_button "Like"
       expect(page).to have_button "Dislike"
       expect(page).not_to have_link "Cancel vote"
+      click_on 'Like'
+      expect(page).not_to have_content "You dislike this answer"
+      expect(page).to have_content "You like this answer"
+      expect(page).to have_content "Rating: 1"
+      expect(page).not_to have_button "Like"
+      expect(page).not_to have_button "Dislike"
+      expect(page).to have_link "Cancel vote"
     end
+
   end
 
 

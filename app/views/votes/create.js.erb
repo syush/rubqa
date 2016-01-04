@@ -1,0 +1,10 @@
+$("#answer-<%= @answer.id %> .votes").html(
+  '<span class="current-vote">' +
+    '<%= @vote.vote_value ? "You like this answer" : "You dislike this answer" %>' +
+  '</span>' +
+  '  |  ' +
+  '<span class="vote-cancel-link">' +
+    '<%= link_to "Cancel vote", vote_path(@vote), method: :delete, remote: true %>' +
+  '</span>');
+$("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
+

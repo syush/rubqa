@@ -1,0 +1,8 @@
+$("#answer-<%= @answer.id %> .votes").html(
+  '<table>' +
+    '<tr>' +
+      '<td class="like-button"> <%= render 'votes/form', answer:@answer, like:true %></td>' +
+      '<td class="dislike-button"> <%= render 'votes/form', answer:@answer, like:false %></td>' +
+    '</tr>' +
+  '</table>');
+$("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
