@@ -1,10 +1,15 @@
-$("#answer-<%= @answer.id %> .votes").html(
-  '<table>' +
-    '<tr>' +
-      '<td class="like-button"> <%= render 'votes/form', answer:@answer, like:true %></td>' +
-      '<td class="dislike-button"> <%= render 'votes/form', answer:@answer, like:false %></td>' +
-    '</tr>' +
-  '</table>');
 <% publish_to "/questions/#{@answer.question.id}/answers" do %>
+  var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
+  var IAmTheVoter = userID == <%= current_user.id %>;
+  if (IAmTheVoter) {
+    $("#answer-<%= @answer.id %> .votes").html(
+      '<table>' +
+        '<tr>' +
+          '<td class="like-button"> <%= render 'votes/form', answer:@answer, like:true %></td>' +
+          '<td class="dislike-button"> <%= render 'votes/form', answer:@answer, like:false %></td>' +
+        '</tr>' +
+      '</table>'
+    );
+  }
   $("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
 <% end %>

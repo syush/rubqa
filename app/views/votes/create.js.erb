@@ -1,11 +1,16 @@
-  $("#answer-<%= @answer.id %> .votes").html(
-    '<span class="current-vote">' +
-      '<%= @vote.vote_value ? "You like this answer" : "You dislike this answer" %>' +
-    '</span>' +
-    '  |  ' +
-    '<span class="vote-cancel-link">' +
-      '<%= link_to "Cancel vote", vote_path(@vote), method: :delete, remote: true %>' +
-    '</span>');
 <% publish_to "/questions/#{@answer.question.id}/answers" do %>
+  var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
+  var IAmTheVoter = userID == <%= current_user.id %>;
+  if (IAmTheVoter) {
+      $("#answer-<%= @answer.id %> .votes").html(
+              '<span class="current-vote">' +
+              '<%= @vote.vote_value ? "You like this answer" : "You dislike this answer" %>' +
+              '</span>' +
+              '  |  ' +
+              '<span class="vote-cancel-link">' +
+              '<%= link_to "Cancel vote", vote_path(@vote), method: :delete, remote: true %>' +
+              '</span>'
+      );
+  }
   $("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
 <% end %>
