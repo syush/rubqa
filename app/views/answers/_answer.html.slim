@@ -11,13 +11,15 @@
     button.answer-cancel Cancel
   p.links
     - if can_change
-      span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
-      ="  |  "
-      span.edit-answer-link= link_to 'Edit answer', '#'
-    - if can_select_best && !is_best?(answer)
-      - if can_change
+      span.change-group
+        span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
         ="  |  "
-      span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
+        span.edit-answer-link= link_to 'Edit answer', '#'
+    - if can_select_best && !is_best?(answer)
+      span.select-group
+        - if can_change
+          ="  |  "
+        span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
   .votes
     - if user_signed_in? && !answer.voted(current_user) && !i_am_author_of(answer)
       table

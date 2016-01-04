@@ -1,9 +1,14 @@
 
 <% publish_to "/questions/#{@question.id}/answers" do %>
-  $("#answers").append( '<%= j render @answer, can_change:true, can_select_best:false %>' );
-  userID = (" ;" + document.cookie).split("user_id=")[1].split(';').shift();
-  if (Boolean(<%= !user_signed_in? %>) || (parseInt(userID) != <%= current_user.id %>)) {
-    $("#answer-<%=@answer.id%> .links").remove();
+  var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
+  var IAmAnswerAuthor = userID == <%= current_user.id %>;
+  var IAmQuestionAuthor = userID == <%= @question.user_id %>
+  $("#answers").append( '<%= j render @answer, can_change:true, can_select_best:true %>' );
+  if (!IAmAnswerAuthor) {
+    $("#answer-<%=@answer.id%> .links .change-group").remove();
+  }
+  if (!IAmQuestionAuthor) {
+    $("#answer-<%=@answer.id%> .links .select-group").remove();
   }
   $("#count h2").html(
     "<%= @question.answers.count %> answer(s):"

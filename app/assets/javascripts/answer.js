@@ -9,7 +9,7 @@ $(document).ready(function() {
     $('.answer-form').hide();
 
     $(document).on('click', '.edit-answer-link', function(){
-        var id = $($($(this).parents()[0]).parents()[0]).attr('id');
+        var id = $($($($(this).parents()[0]).parents()[0]).parents()[0]).attr('id');
         $('.answer-body').show();
         $('.answer-form').hide();
         $('.edit-answer-link').show();
