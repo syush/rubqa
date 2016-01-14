@@ -1,0 +1,5 @@
+.question id="question-#{question.id}"
+  a href=question_path(question)
+    h3= question.title
+  p= truncate( question.body, length:100)
+  hr

@@ -7,7 +7,7 @@
       p= f.submit 'Submit'
     button.answer-cancel Cancel
   - if with_links
-    p
+    p.links
       span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
       ="  |  "
       span.edit-answer-link= link_to 'Edit answer', '#'
