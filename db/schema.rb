@@ -47,11 +47,12 @@ ActiveRecord::Schema.define(version: 20160123004653) do
   add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "body"
     t.string   "title"
     t.integer  "user_id"
+    t.integer  "best_answer_id"
   end
 
   create_table "users", force: :cascade do |t|
