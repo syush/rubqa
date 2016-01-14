@@ -22,4 +22,6 @@ hr
       = f.label :body, 'Your answer:'
       = f.text_area :body
       = f.submit 'Submit'
+#attachments
+
 = subscribe_to "/questions/#{@question.id}/answers"

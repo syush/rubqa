@@ -8,6 +8,8 @@ class Question < ActiveRecord::Base
   validates :title, :body, presence:true
   validates :title, :length => { :maximum => 200 }
 
+  accepts_nested_attributes_for :attachments
+
   def best_answer
     self.answers.where(best_answer: true).first
   end
