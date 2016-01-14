@@ -9,20 +9,19 @@ feature 'Authenticated user creates an answer', %q{
   given(:user) {create(:user)}
   given(:question) { create(:question, user:user) }
 
-  scenario 'Authenticated user replies a question' do
+  scenario 'Authenticated user replies a question', js:true do
     login(user)
     visit question_path(question)
-    click_on 'Reply'
     fill_in 'Your answer:', with: 'I guess around 7 billion'
     click_on 'Submit'
     expect(page).to have_content("I guess around 7 billion")
     expect(current_path).to eq question_path(question)
+    visit question_path(question)
+    expect(page).to have_content("I guess around 7 billion")
   end
 
   scenario 'Non-authenticated guest tries to reply a question' do
     visit question_path(question)
-    click_on 'Reply'
-    expect(page).to have_content(I18n.t('devise.failure.unauthenticated'))
     expect(page).to_not have_content('Your answer:')
   end
 

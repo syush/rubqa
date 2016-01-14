@@ -2,6 +2,7 @@ require 'rails_helper'
 
   RSpec.describe QuestionsController, type: :controller do
     let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
     let(:question) { create(:question, user:user) }
 
     describe "GET #index" do
@@ -96,10 +97,12 @@ require 'rails_helper'
 
     describe "PATCH #update" do
 
-      before { login(user) }
-
       context 'valid' do
-        before { patch :update, id: question, question: { title: 'new title', body: 'new body' } }
+        before do
+          login(user)
+          patch :update, id: question, question: { title: 'new title', body: 'new body' }
+        end
+
         it 'changes question' do
           question.reload
           expect(question.title).to eq 'new title'
@@ -112,7 +115,10 @@ require 'rails_helper'
       end
 
       context 'invalid' do
-        before { patch :update, id: question, question: { title: nil, body: nil } }
+        before do
+          login(user)
+          patch :update, id: question, question: { title: nil, body: nil }
+        end
 
         it 'does not change question attributes' do
           old_title = question.title
@@ -126,6 +132,39 @@ require 'rails_helper'
           expect(response).to render_template :edit
         end
       end
+
+      context 'non_author' do
+        before do
+          login(other_user)
+          patch :update, id: question, question: { title: 'new title', body: 'new body'}
+        end
+
+        it 'does not change question attributes' do
+          old_title = question.title
+          old_body = question.body
+          question.reload
+          expect(question.title).to eq old_title
+          expect(question.body).to eq old_body
+        end
+
+      end
+
+      context 'guest' do
+        before do
+          patch :update, id: question, question: { title: 'new title', body: 'new body'}
+        end
+
+        it 'does not change question attributes' do
+          old_title = question.title
+          old_body = question.body
+          question.reload
+          expect(question.title).to eq old_title
+          expect(question.body).to eq old_body
+        end
+
+      end
+
+
     end
 
     describe "DELETE #destroy" do

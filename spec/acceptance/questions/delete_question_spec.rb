@@ -12,7 +12,7 @@ feature 'Delete question', %q{
   scenario "Question's author removes the question " do
     login(author)
     visit question_path(question)
-    click_on 'Delete'
+    click_on 'Delete question'
     expect(page).to have_content 'The question was successfully deleted'
     expect(page).not_to have_content question.title
     expect(current_path).to eq questions_path
@@ -22,11 +22,11 @@ feature 'Delete question', %q{
     non_author = create(:user)
     login(non_author)
     visit question_path(question)
-    expect(page).not_to have_link 'Delete'
+    expect(page).not_to have_link 'Delete question'
   end
 
   scenario "Non-authenticated user tries to remove the question" do
     visit question_path(question)
-    expect(page).not_to have_link 'Delete'
+    expect(page).not_to have_link 'Delete question'
   end
 end
