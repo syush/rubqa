@@ -1,12 +1,13 @@
-$("#answers").append(
-        '<div class="answer" id="answer-<%= @answer.id %>">' +
-          "<p><%= @answer.body %></p>" +
-          '<p><%= link_to "Delete answer", answer_path(@answer), method: :delete, remote: true %></p>' +
-          '<p><%= link_to "Edit answer", edit_answer_path(@answer) %></p>' +
-          '<hr>' +
-        '</div>'
-);
-$("#answers h2").html(
- "<%= @question.answers.count %> answer(s):"
-);
+
+<% publish_to "/questions/#{@question.id}/answers" do %>
+  $("#answers").append( '<%= j render @answer, with_links:true %>' );
+  userID = (" ;" + document.cookie).split("user_id=")[1].split(';').shift();
+  if (Boolean(<%= !user_signed_in? %>) || (parseInt(userID) != <%= current_user.id %>)) {
+    $("#answer-<%=@answer.id%> .links").remove();
+  }
+  $("#answers h2").html(
+    "<%= @question.answers.count %> answer(s):"
+  );
+  $("#answer-<%=@answer.id%> .answer-form").hide();
+<% end %>
 

@@ -1,0 +1,25 @@
+#errors
+h1.question-title= @question.title
+p.question-body= @question.body
+.question-form.form-container
+  == render 'form', remote:true, format: :json
+  button.question-cancel Cancel
+- if user_signed_in? && current_user.id == author_id_of(@question)
+  p
+    span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
+    ="  |  "
+    span.edit-question-link= link_to 'Edit question', '#'
+hr
+#answers
+  - unless @question.answers.empty?
+    h2="#{@count} answer(s):"
+    - @question.answers.each do |answer|
+      = render answer, with_links: user_signed_in? && current_user.id == author_id_of(answer)
+- if user_signed_in?
+  .new-answer-form.form-container
+    h3 Answer the question!
+    = form_for [@question, @answer], remote: true do |f|
+      = f.label :body, 'Your answer:'
+      = f.text_area :body
+      = f.submit 'Submit'
+= subscribe_to "/questions/#{@question.id}/answers"
