@@ -4,11 +4,14 @@ class Answer < ActiveRecord::Base
   belongs_to :user
   has_many :votes, dependent: :destroy
   has_many :voters, through: :votes, source: :user
+  has_many :attachments, as: :attachable, dependent: :destroy
 
   validates :body, presence:true
   validates :question_id, presence:true
   validates :user_id, presence:true
   validates :best_answer, uniqueness: { scope: :question_id }, if: :best_answer
+
+  accepts_nested_attributes_for :attachments
 
   def is_best?
     self.best_answer
@@ -31,7 +34,6 @@ class Answer < ActiveRecord::Base
   end
 
   def get_vote(user)
-#    Vote.where("answer_id = ? and user_id = ?", self.id, user.id)
     self.votes.where(user_id: user.id).first
   end
 

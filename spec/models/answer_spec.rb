@@ -10,10 +10,13 @@ RSpec.describe Answer, type: :model do
   it { should belong_to :user }
   it { should have_many(:votes).dependent(:destroy) }
   it { should have_many(:voters).through(:votes).source(:user) }
+  it { should have_many :attachments }
 
   it { should validate_presence_of :body }
   it { should validate_presence_of :question_id }
   it { should validate_presence_of :user_id }
+
+  it { should accept_nested_attributes_for :attachments }
 
   let(:question_author) { create(:user) }
   let(:answer_author) { create(:user) }
