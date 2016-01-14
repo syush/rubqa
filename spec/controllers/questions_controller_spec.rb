@@ -45,21 +45,6 @@ require 'rails_helper'
       end
     end
 
-    describe "GET #edit" do
-      before do
-        login(user)
-        get :edit, id: question
-      end
-
-      it 'assigns new Question' do
-        expect(assigns(:question)).to eq question
-      end
-
-      it 'renders edit template' do
-        expect(response).to render_template :edit
-      end
-    end
-
     describe "POST #create" do
 
       before { login(user) }
@@ -109,9 +94,8 @@ require 'rails_helper'
           expect(question.body).to eq 'new body'
         end
 
-        it 'redirects to show' do
-          expect(response).to redirect_to question
-        end
+        it 'renders JSON with question'
+
       end
 
       context 'invalid' do
@@ -128,9 +112,8 @@ require 'rails_helper'
           expect(question.body).to eq old_body
         end
 
-        it 'render edit template' do
-          expect(response).to render_template :edit
-        end
+        it 'renders JSON with errors'
+
       end
 
       context 'non_author' do
