@@ -23,4 +23,5 @@ require 'rails_helper'
        expect(page).to have_content 'Invalid email or password'
        expect(page).to_not have_link 'Log out'
      end
+
   end
