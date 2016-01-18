@@ -19,6 +19,7 @@ gem 'private_pub'
 gem 'thin'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-vk'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
