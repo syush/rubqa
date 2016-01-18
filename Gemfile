@@ -17,6 +17,8 @@ gem 'devise'
 gem 'slim-rails'
 gem 'private_pub'
 gem 'thin'
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
