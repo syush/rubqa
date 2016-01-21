@@ -6,7 +6,7 @@ p.question-body= @question.body
 .question-form.form-container
   == render 'form', remote:true, format: :json, with_file: false
   button.question-cancel Cancel
-- if i_am_author_of(@question)
+- if can?(:destroy, @question)
   p
     span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
     ="  |  "

@@ -22,6 +22,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-vk'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cancancan'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

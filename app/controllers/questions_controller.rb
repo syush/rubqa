@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -32,30 +34,22 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if (i_am_author_of(@question))
-      respond_to do |format|
-        if @question.update(question_params)
-          PrivatePub.publish_to "/questions", question:@question, action:'update'
-          format.html { redirect_to @question, notice: 'Your question was successfully updated' }
-          format.json { render json: {question:@question} }
-        else
-          format.html { redirect_to @question, alert: 'The question was not updated' }
-          format.json { render json: @question.errors.full_messages, status: :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @question.update(question_params)
+        PrivatePub.publish_to "/questions", question:@question, action:'update'
+        format.html { redirect_to @question, notice: 'Your question was successfully updated' }
+        format.json { render json: {question:@question} }
+      else
+        format.html { redirect_to @question, alert: 'The question was not updated' }
+        format.json { render json: @question.errors.full_messages, status: :unprocessable_entity }
       end
-    else
-      redirect_to @question, alert: 'You attempted an unauthorized action'
     end
   end
 
   def destroy
-    if (i_am_author_of(@question))
-      @question.destroy
-      PrivatePub.publish_to "/questions", question_id:@question.id, action:'destroy'
-      redirect_to questions_path, notice: 'The question was successfully deleted'
-    else
-      redirect_to questions_path, alert: 'You attempted an unauthorized action'
-    end
+    @question.destroy
+    PrivatePub.publish_to "/questions", question_id:@question.id, action:'destroy'
+    redirect_to questions_path, notice: 'The question was successfully deleted'
   end
 
   private
