@@ -5,8 +5,17 @@ class ApplicationController < ActionController::Base
   before_action :set_user_in_cookie
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, alert: exception.message
+    respond_to do |format|
+      format.html { redirect_to root_path, alert: exception.message }
+      format.json { render json: { message: exception.message }, status: :forbidden }
+      format.js do |exception|
+        @message = exception.message
+        render 'common/not_authorized'
+      end
+    end
   end
+
+  check_authorization unless :devise_controller?
 
   protected
 
