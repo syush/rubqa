@@ -7,16 +7,18 @@ class Vote < ActiveRecord::Base
   validates :answer_id, presence: true
   validates :user_id, uniqueness: { scope: :answer_id }
 
-  validate do
-    if self.answer && self.answer.user_id && self.user_id && self.answer.user_id == self.user_id
-      errors.add(:user, 'cannot vote for or against his own answer')
-    end
-  end
+  validate :forbid_own_votes
 
   private
 
   def not_own_question
     self.answer.user_id != self.user_id
+  end
+
+  def forbid_own_votes
+    if self.answer && self.answer.user_id && self.user_id && self.answer.user_id == self.user_id
+      errors.add(:user, 'cannot vote for or against his own answer')
+    end
   end
 
 end
