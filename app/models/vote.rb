@@ -5,7 +5,7 @@ class Vote < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :answer_id, presence: true
-  validates_uniqueness_of :answer_id, scope: :user_id
+  validates :user_id, uniqueness: { scope: :answer_id }
 
   validate do
     if self.answer && self.answer.user_id && self.user_id && self.answer.user_id == self.user_id
