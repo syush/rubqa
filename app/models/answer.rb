@@ -18,7 +18,8 @@ class Answer < ActiveRecord::Base
   end
 
   def get_vote(user)
-    votes.each { |v| return v if user.id == v.user_id }
+#    Vote.where("answer_id = ? and user_id = ?", self.id, user.id)
+    self.votes.where(user_id: user.id).first
   end
 
 end
