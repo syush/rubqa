@@ -32,11 +32,16 @@ RSpec.describe Answer, type: :model do
     expect(answer.rating).to eq 4
   end
 
+  it 'correctly treats integer vote values as likes and dislikes' do
+    expect(answer.get_vote(voters[5]).is_like?).to eq true
+    expect(answer.get_vote(voters[8]).is_like?).to eq false
+  end
+
   it 'checks whether a user has voted' do
-    voters.each { |voter| expect(answer.voted(voter)).to eq true }
-    expect(answer.voted(answer_author)).to eq false
-    expect(answer.voted(question_author)).to eq false
-    expect(answer.voted(another_user)).to eq false
+    voters.each { |voter| expect(answer.voted?(voter)).to eq true }
+    expect(answer.voted?(answer_author)).to eq false
+    expect(answer.voted?(question_author)).to eq false
+    expect(answer.voted?(another_user)).to eq false
   end
 
   it "returns user's vote" do

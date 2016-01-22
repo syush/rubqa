@@ -13,7 +13,7 @@ class Answer < ActiveRecord::Base
     self.votes.sum(:vote_value)
   end
 
-  def voted(user)
+  def voted?(user)
     voters.include?(user)
   end
 
