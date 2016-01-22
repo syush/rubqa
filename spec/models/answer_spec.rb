@@ -40,8 +40,8 @@ RSpec.describe Answer, type: :model do
   end
 
   it "returns user's vote" do
-    (0..6).to_a.each { |i| expect(answer.get_vote(voters[i]).vote_value).to eq true }
-    (7..9).to_a.each { |i| expect(answer.get_vote(voters[i]).vote_value).to eq false }
+    (0..6).to_a.each { |i| expect(answer.get_vote(voters[i]).vote_value).to eq 1 }
+    (7..9).to_a.each { |i| expect(answer.get_vote(voters[i]).vote_value).to eq -1 }
   end
 
 end

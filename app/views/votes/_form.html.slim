@@ -1,3 +1,3 @@
 = form_for [answer, Vote.new], remote: true, format: :js do |f|
-  =  f.hidden_field :vote_value, value:like
+  =  f.hidden_field :vote_value, value: (like ? 1 : -1)
   =  f.submit like ? 'Like' : 'Dislike'

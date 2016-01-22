@@ -30,7 +30,7 @@ RSpec.describe VotesController, type: :controller do
         attr = attributes_for(:vote_for)
         post :create, answer_id: answer.id, vote: attr, format: :js
         answer.reload
-        expect(answer.votes.last.vote_value).to eq true
+        expect(answer.votes.last.vote_value).to eq 1
         expect(answer.votes.last.user_id).to eq voter.id
       end
 
@@ -38,7 +38,7 @@ RSpec.describe VotesController, type: :controller do
         attr = attributes_for(:vote_against)
         post :create, answer_id: answer.id, vote: attr, format: :js
         answer.reload
-        expect(answer.votes.last.vote_value).to eq false
+        expect(answer.votes.last.vote_value).to eq -1
         expect(answer.votes.last.user_id).to eq voter.id
       end
 

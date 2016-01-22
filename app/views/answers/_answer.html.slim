@@ -24,11 +24,11 @@
     - if user_signed_in? && !answer.voted(current_user) && !i_am_author_of(answer)
       table
         tr
-          td.like-button= render 'votes/form', answer:answer, like:true
-          td.dislike-button= render 'votes/form', answer:answer, like:false
+          td.like-button= render 'votes/form', answer:answer, like: true
+          td.dislike-button= render 'votes/form', answer:answer, like: false
     - if user_signed_in? && answer.voted(current_user)
       - vote = answer.get_vote(current_user)
-      span.current-vote= vote.vote_value ? "You like this answer" : "You dislike this answer"
+      span.current-vote= vote.is_like? ? "You like this answer" : "You dislike this answer"
       ="  |  "
       span.vote-cancel-link= link_to 'Cancel vote', vote_path(vote), method: :delete, remote: true
   hr

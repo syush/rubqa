@@ -10,9 +10,7 @@ class Answer < ActiveRecord::Base
   validates :user_id, presence:true
 
   def rating
-    r = 0
-    self.votes.each { |v| v.vote_value ? r += 1 : r -= 1 }
-    r
+    self.votes.sum(:vote_value)
   end
 
   def voted(user)

@@ -9,6 +9,10 @@ class Vote < ActiveRecord::Base
 
   validate :forbid_own_votes
 
+  def is_like?
+    vote_value == 1
+  end
+
   private
 
   def not_own_question

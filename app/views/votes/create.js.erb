@@ -4,7 +4,7 @@
   if (IAmTheVoter) {
       $("#answer-<%= @answer.id %> .votes").html(
         '<span class="current-vote">' +
-          '<%= @vote.vote_value ? "You like this answer" : "You dislike this answer" %>' +
+          '<%= @vote.is_like? ? "You like this answer" : "You dislike this answer" %>' +
         '</span>' +
         '  |  ' +
         '<span class="vote-cancel-link">' +
