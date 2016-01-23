@@ -13,8 +13,8 @@ hr
 #count
   h2="#{@count} answer(s):" unless @question.answers.empty?
 #answers
-  - sorted_answers(@question).each do |answer|
-    = render answer, can_change: i_am_author_of(answer), can_select_best: i_am_author_of(@question)
+  - @question.sorted_answers.each do |answer|
+    = render answer
 - if user_signed_in?
   .new-answer-form.form-container
     h3 Answer the question!

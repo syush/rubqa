@@ -40,12 +40,16 @@ class AnswersController < ApplicationController
 
   def select_as_best
     @question = @answer.question
+    @old_best = @question.best_answer
     if (user_signed_in? && current_user.id == @question.user_id)
-      @question.best_answer = @answer
-      @question.save
+      unless @question.set_best_answer_and_save(@answer)
+        redirect_to @question, alert: 'The best answer selection was not successful'
+      end
     else
-      redirect_to @answer.question, alert: 'You attempted and unauthorized action'
+      redirect_to @question, alert: 'You attempted and unauthorized action'
     end
+    @answer.reload
+    @old_best.try(:reload)
   end
 
   private

@@ -158,10 +158,7 @@ RSpec.describe AnswersController, type: :controller do
 
     let!(:answers) { create_list(:answer, 3, question:question, user:answer_author) }
 
-    before do
-      question.best_answer = answers[1]
-      question.save
-    end
+    before { question.set_best_answer_and_save(answers[1]) }
 
     context 'question-author' do
 
@@ -171,8 +168,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'makes the answer best' do
-        question.reload
-        expect(question.best_answer_id).to eq answers[2].id
+        expect(question.reload.best_answer.id).to eq answers[2].id
       end
 
       it 'renders select_as_best template' do
@@ -186,7 +182,7 @@ RSpec.describe AnswersController, type: :controller do
         login(answer_author)
         xhr :get, :select_as_best, id:answers[2], format: :js
         question.reload
-        expect(question.best_answer_id).to eq answers[1].id
+        expect(question.best_answer.id).to eq answers[1].id
       end
     end
 
@@ -194,7 +190,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not change best answer selection' do
         xhr :get, :select_as_best, id:answers[2], format: :js
         question.reload
-        expect(question.best_answer_id).to eq answers[1].id
+        expect(question.best_answer.id).to eq answers[1].id
       end
     end
   end
