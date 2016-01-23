@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
                       answer: attr, format: :js }.to change(Answer, :count).by(1)
       end
 
-      it 'redirects to show' do
+      it 'renders create template' do
         attr = attributes_for(:answer)
         post :create, question_id: question.id, answer: attr, format: :js
         expect(response).to render_template :create
@@ -120,9 +120,6 @@ RSpec.describe AnswersController, type: :controller do
 
   end
 
-
-
-
   describe "DELETE #destroy" do
 
     let!(:answer) { create(:answer, question:question, user:answer_author) }
@@ -134,7 +131,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, id: answer, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question path' do
+      it 'renders destroy template' do
         delete :destroy, id: answer, format: :js
         expect(response).to render_template :destroy
       end
@@ -155,6 +152,47 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
+  end
+
+  describe "GET #select_as_best" do
+
+    let!(:answers) { create_list(:answer, 3, question:question, user:answer_author) }
+
+    before { question.set_best_answer_and_save(answers[1]) }
+
+    context 'question-author' do
+
+      before do
+        login(question_author)
+        xhr :get, :select_as_best, id:answers[2], format: :js
+      end
+
+      it 'makes the answer best' do
+        expect(question.reload.best_answer.id).to eq answers[2].id
+      end
+
+      it 'renders select_as_best template' do
+        expect(response).to render_template :select_as_best
+      end
+
+    end
+
+    context 'non-author' do
+      it 'does not change best answer selection' do
+        login(answer_author)
+        xhr :get, :select_as_best, id:answers[2], format: :js
+        question.reload
+        expect(question.best_answer.id).to eq answers[1].id
+      end
+    end
+
+    context 'guest' do
+      it 'does not change best answer selection' do
+        xhr :get, :select_as_best, id:answers[2], format: :js
+        question.reload
+        expect(question.best_answer.id).to eq answers[1].id
+      end
+    end
   end
 
 end

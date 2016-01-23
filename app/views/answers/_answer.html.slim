@@ -1,4 +1,7 @@
 .answer id="answer-#{answer.id}"
+  p.best-and-rating
+    span.best-answer= answer.is_best? ? "Best answer | " : ""
+    span.rating= "Rating: #{answer.rating}"
   p.answer-body= answer.body
   .answer-form.form-container
     = form_for answer, remote: true, format: :json do |f|
@@ -6,9 +9,26 @@
       p= f.text_area :body
       p= f.submit 'Submit'
     button.answer-cancel Cancel
-  - if with_links
-    p.links
-      span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+  p.links
+    - if i_am_author_of(answer)
+      span.change-group
+        span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+        ="  |  "
+        span.edit-answer-link= link_to 'Edit answer', '#'
+    - if i_am_author_of(answer.question) && !answer.is_best?
+      span.select-group
+        - if i_am_author_of(answer)
+          ="  |  "
+        span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
+  .votes
+    - if user_signed_in? && !answer.voted?(current_user) && !i_am_author_of(answer)
+      table
+        tr
+          td.like-button= render 'votes/form', answer:answer, like: true
+          td.dislike-button= render 'votes/form', answer:answer, like: false
+    - if user_signed_in? && answer.voted?(current_user)
+      - vote = answer.get_vote(current_user)
+      span.current-vote= vote.is_like? ? "You like this answer" : "You dislike this answer"
       ="  |  "
-      span.edit-answer-link= link_to 'Edit answer', '#'
+      span.vote-cancel-link= link_to 'Cancel vote', vote_path(vote), method: :delete, remote: true
   hr

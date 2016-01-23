@@ -4,17 +4,17 @@ p.question-body= @question.body
 .question-form.form-container
   == render 'form', remote:true, format: :json
   button.question-cancel Cancel
-- if user_signed_in? && current_user.id == author_id_of(@question)
+- if i_am_author_of(@question)
   p
     span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
     ="  |  "
     span.edit-question-link= link_to 'Edit question', '#'
 hr
+#count
+  h2="#{@count} answer(s):" unless @question.answers.empty?
 #answers
-  - unless @question.answers.empty?
-    h2="#{@count} answer(s):"
-    - @question.answers.each do |answer|
-      = render answer, with_links: user_signed_in? && current_user.id == author_id_of(answer)
+  - @question.sorted_answers.each do |answer|
+    = render answer
 - if user_signed_in?
   .new-answer-form.form-container
     h3 Answer the question!

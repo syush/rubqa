@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :load_answer, only: [:edit, :update, :destroy]
+  before_action :load_answer, only: [:edit, :update, :destroy, :select_as_best]
 
   def create
     @question = Question.find(params[:question_id])
@@ -38,9 +38,22 @@ class AnswersController < ApplicationController
     end
   end
 
+  def select_as_best
+    @question = @answer.question
+    @old_best = @question.best_answer
+    if (user_signed_in? && current_user.id == @question.user_id)
+      unless @question.set_best_answer_and_save(@answer)
+        redirect_to @question, alert: 'The best answer selection was not successful'
+      end
+    else
+      redirect_to @question, alert: 'You attempted and unauthorized action'
+    end
+    @answer.reload
+    @old_best.try(:reload)
+  end
+
   private
 
-  # comment
   def answer_params
     params.require(:answer).permit(:body)
   end

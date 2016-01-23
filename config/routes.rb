@@ -2,8 +2,11 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :questions do
-    resources :answers, shallow: true
+    resources :answers, shallow: true do
+      resources :votes, shallow: true, only: [:create, :destroy]
+    end
   end
+  get 'answers/:id/select_as_best' => 'answers#select_as_best', as: 'select_as_best_answer'
   root to: 'questions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
