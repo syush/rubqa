@@ -1,0 +1,7 @@
+$("#answer-<%= @answer.id %>").remove();
+$("#answer-<%= @old_best.try(:id) %>").remove();
+$("#answers").prepend( '<%= j render @answer %>' );
+$("#answer-<%= @answer.id %> .answer-form").hide();
+$("#answers").append( '<%= j render @old_best if @old_best %>' );
+$("#answer-<%= @old_best.try(:id) %> .best-and-rating .best-answer").hide();
+$("#answer-<%= @old_best.try(:id) %> .answer-form").hide();

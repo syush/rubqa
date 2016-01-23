@@ -1,6 +1,6 @@
 <% publish_to "/questions/#{@answer.question.id}/answers" do %>
   $("#answer-<%= @answer.id %>").html("")
-  $("#answers h2").html(
+  $("#count h2").html(
         "<%= @count %> answer(s):"
   );
 <% end %>
