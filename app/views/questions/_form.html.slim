@@ -3,7 +3,7 @@
   p= f.text_field :title
   p= f.label :body, 'Text'
   p= f.text_field :body
-  p Attach a file below:
+  p You can attach a file below:
   p= f.fields_for :attachments do |f_a|
     p= f_a.label :file
     p= f_a.file_field :file
