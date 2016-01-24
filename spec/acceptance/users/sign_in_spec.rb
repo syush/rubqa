@@ -8,7 +8,8 @@ require 'rails_helper'
 
      given!(:user) { create(:user) }
      scenario 'Existing user tries to sign in' do
-       visit new_user_session_path
+       visit questions_path
+       click_on 'Sign in'
        fill_in 'Email', with: user.email
        fill_in 'Password', with: '12345678'
        click_on 'Log in'
@@ -22,6 +23,7 @@ require 'rails_helper'
        click_on 'Log in'
        expect(page).to have_content 'Invalid email or password'
        expect(page).to_not have_link 'Log out'
+       expect(page).to have_link 'Sign in'
      end
 
   end
