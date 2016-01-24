@@ -1,8 +1,15 @@
 #errors
 h1.question-title= @question.title
 p.question-body= @question.body
+- unless @question.attachments.empty?
+  .question-files
+    p Attachments:
+    - @question.attachments.each do |a|
+      ul
+        li
+          span= link_to a.file_name, a.file.url
 .question-form.form-container
-  == render 'form', remote:true, format: :json
+  == render 'form', remote:true, format: :json, with_file: false
   button.question-cancel Cancel
 - if i_am_author_of(@question)
   p
