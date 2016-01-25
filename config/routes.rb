@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
   resources :attachments, only: [:destroy]
   resources :questions do

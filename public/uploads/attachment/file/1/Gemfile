@@ -17,13 +17,8 @@ gem 'devise'
 gem 'slim-rails'
 gem 'private_pub'
 gem 'thin'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-vk'
 gem 'carrierwave'
 gem 'remotipart'
-gem 'cancancan'
-gem 'doorkeeper'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

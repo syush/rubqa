@@ -76,6 +76,8 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    doorkeeper (3.1.0)
+      railties (>= 3.2)
     em-http-request (1.1.2)
       addressable (>= 2.3.4)
       cookiejar
@@ -285,6 +287,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
+  doorkeeper
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
