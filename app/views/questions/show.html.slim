@@ -2,7 +2,7 @@
 h1.question-title= @question.title
 p.question-body= @question.body
 .question-files
-  = render 'attachments', attachable:@question
+  = render 'attachments/attachments', attachable:@question
 .question-form.form-container
   == render 'form', remote:true, format: :json, with_file: false
   button.question-cancel Cancel
@@ -23,8 +23,7 @@ hr
     = form_for [@question, @answer], remote: true do |f|
       = f.label :body, 'Your answer:'
       = f.text_area :body
-      = render 'attachments_form', f:f
+      = render 'attachments/attachments_form', f:f
       = f.submit 'Submit'
-#attachments
 
 = subscribe_to "/questions/#{@question.id}/answers"

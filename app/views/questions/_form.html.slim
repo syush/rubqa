@@ -4,5 +4,5 @@
   p= f.label :body, 'Text'
   p= f.text_field :body
   - if with_file
-    = render 'attachments_form', f:f
+    = render 'attachments/attachments_form', f:f
   p= f.submit 'Submit'

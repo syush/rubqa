@@ -1,5 +1,5 @@
 = form_for answer, remote:true, format:format do |f|
   = f.label :body, 'Your answer:'
   = f.text_area  :body
-  = render 'questions/attachments_form', f:f
+  = render 'attachments/attachments_form', f:f
   = f.submit 'Submit'
