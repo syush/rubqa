@@ -4,6 +4,6 @@
     - attachable.attachments.each_with_index do |a, i|
       li class="file-#{i + 1}"
         span= link_to a.file_name, a.file.url
-        - if i_am_author_of(attachable)
+        - if can?(:destroy, a)
           span= " | "
           span= link_to 'Remove file', attachment_path(a), method: :delete

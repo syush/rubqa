@@ -28,8 +28,13 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :read, :all
-    can :manage, [Question, Answer], user_id: user.id
+    can [:create, :update, :destroy], [Question, Answer, Vote], user_id: user.id
+    can :destroy, Attachment do |attachment|
+      attachment.attachable.user_id == user.id
+    end
+    can :select_as_best, Answer do |answer|
+      answer.question.user_id == user.id
+    end
   end
     #
     # The first argument to `can` is the action you are giving the user

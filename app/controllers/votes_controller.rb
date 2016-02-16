@@ -1,6 +1,9 @@
 class VotesController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :load_vote, only: :destroy
+
+  authorize_resource
 
   def create
     @answer = Answer.find(params[:answer_id])
@@ -12,17 +15,14 @@ class VotesController < ApplicationController
         redirect_to @answer.question, alert: 'Unable to vote'
       end
     else
-      redirect_to @answer.question, alert: 'You have already voted here'
+      redirect_to @answer.question, alert: "You can't vote for your own answer"
     end
   end
 
   def destroy
-    @vote = Vote.find(params[:id])
     @answer = @vote.answer
-    if current_user.id == @vote.user_id
-      unless @vote.destroy
-        redirect_to @answer.question, alert: 'Unable to remove vote'
-      end
+    unless @vote.destroy
+      redirect_to @answer.question, alert: 'Unable to remove vote'
     end
   end
 
@@ -30,6 +30,10 @@ class VotesController < ApplicationController
 
   def vote_params
     params.require(:vote).permit(:vote_value)
+  end
+
+  def load_vote
+    @vote = Vote.find(params[:id])
   end
 
 end

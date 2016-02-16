@@ -6,9 +6,10 @@ p.question-body= @question.body
 .question-form.form-container
   == render 'form', remote:true, format: :json, with_file: false
   button.question-cancel Cancel
-- if can?(:destroy, @question)
-  p
+p
+  - if can?(:destroy, @question)
     span.delete-question-link= link_to 'Delete question', question_path(@question), method: :delete
+  - if can?(:update, @question)
     ="  |  "
     span.edit-question-link= link_to 'Edit question', '#'
 hr
@@ -17,7 +18,7 @@ hr
 #answers
   - @question.sorted_answers.each do |answer|
     = render answer
-- if user_signed_in?
+- if can?(:create, Answer)
   .new-answer-form.form-container
     h3 Answer the question!
     = form_for [@question, @answer], remote: true do |f|

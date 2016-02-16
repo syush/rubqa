@@ -12,14 +12,15 @@
       p= f.submit 'Submit'
     button.answer-cancel Cancel
   p.links
-    - if i_am_author_of(answer)
-      span.change-group
+    span.change-group
+      - if can?(:destroy, answer)
         span.delete-answer-link= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
+      - if can?(:update, answer)
         ="  |  "
         span.edit-answer-link= link_to 'Edit answer', '#'
-    - if i_am_author_of(answer.question) && !answer.is_best?
+    - if can?(:select_as_best, answer) && !answer.is_best?
       span.select-group
-        - if i_am_author_of(answer)
+        - if can?(:update, answer)
           ="  |  "
         span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
   .votes
