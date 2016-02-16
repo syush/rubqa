@@ -1,0 +1,9 @@
+p You can attach up to 3 files below:
+- i = 1
+p= f.fields_for :attachments do |f_a|
+  div class="form-file-#{i}"
+    p
+      span= f_a.label :file
+      span= " #{i}"
+    p= f_a.file_field :file
+    - i += 1

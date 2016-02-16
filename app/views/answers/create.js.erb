@@ -3,7 +3,7 @@
   var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
   var IAmAnswerAuthor = userID == <%= current_user.id %>;
   var IAmQuestionAuthor = userID == <%= @question.user_id %>
-  $("#answers").append( '<%= j render @answer, can_change:true, can_select_best:true %>' );
+  $("#answers").append( '<%= j render @answer %>' );
   if (!IAmAnswerAuthor) {
     $("#answer-<%=@answer.id%> .links .change-group").remove();
   }

@@ -4,8 +4,5 @@
   p= f.label :body, 'Text'
   p= f.text_field :body
   - if with_file
-    p You can attach a file below:
-    p= f.fields_for :attachments do |f_a|
-      p= f_a.label :file
-      p= f_a.file_field :file
+    = render 'attachments_form', f:f
   p= f.submit 'Submit'

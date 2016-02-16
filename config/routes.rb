@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
+  resources :attachments, only: [:destroy]
   resources :questions do
     resources :answers, shallow: true do
       resources :votes, shallow: true, only: [:create, :destroy]

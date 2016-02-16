@@ -1,7 +1,13 @@
 class AnswersController < ApplicationController
 
+  include ApplicationHelper
+
   before_action :authenticate_user!
-  before_action :load_answer, only: [:edit, :update, :destroy, :select_as_best]
+  before_action :load_answer, only: [:show, :edit, :update, :destroy, :select_as_best]
+
+  def show
+    redirect_to @answer.question
+  end
 
   def create
     @question = Question.find(params[:question_id])
@@ -12,7 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if (user_signed_in? && current_user.id == @answer.user_id)
+    if (i_am_author_of(@answer))
       respond_to do |format|
         if @answer.update(answer_params)
           PrivatePub.publish_to "/questions/#{@answer.question.id}/answers", answer:@answer, action:'update'
@@ -30,7 +36,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer = Answer.find(params[:id])
-    if (user_signed_in? && current_user.id == @answer.user_id)
+    if (i_am_author_of(@answer))
       @answer.destroy
       @count = @answer.question.answers.count
     else
@@ -41,7 +47,7 @@ class AnswersController < ApplicationController
   def select_as_best
     @question = @answer.question
     @old_best = @question.best_answer
-    if (user_signed_in? && current_user.id == @question.user_id)
+    if (i_am_author_of(@question))
       unless @question.set_best_answer_and_save(@answer)
         redirect_to @question, alert: 'The best answer selection was not successful'
       end

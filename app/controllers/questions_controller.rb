@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
 
+  include ApplicationHelper
+
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
 
@@ -9,13 +11,13 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @answer.attachments.build
+    3.times { @answer.attachments.build }
     @count = @question.answers.count
   end
 
   def new
     @question = Question.new
-    @question.attachments.build
+    3.times { @question.attachments.build }
   end
 
   def create
@@ -30,7 +32,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if (user_signed_in? && current_user.id == @question.user_id)
+    if (i_am_author_of(@question))
       respond_to do |format|
         if @question.update(question_params)
           PrivatePub.publish_to "/questions", question:@question, action:'update'
@@ -47,7 +49,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if (user_signed_in? && current_user.id == @question.user_id)
+    if (i_am_author_of(@question))
       @question.destroy
       PrivatePub.publish_to "/questions", question_id:@question.id, action:'destroy'
       redirect_to questions_path, notice: 'The question was successfully deleted'

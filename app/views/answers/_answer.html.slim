@@ -3,6 +3,8 @@
     span.best-answer= answer.is_best? ? "Best answer | " : ""
     span.rating= "Rating: #{answer.rating}"
   p.answer-body= answer.body
+  .answer-files
+    = render 'questions/attachments', attachable:answer
   .answer-form.form-container
     = form_for answer, remote: true, format: :json do |f|
       p= f.label :body, 'Your answer:'
