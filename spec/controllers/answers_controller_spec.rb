@@ -118,6 +118,14 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
+    context 'private_pub' do
+      it 'sends PrivatePub message' do
+        expect(PrivatePub).to receive(:publish_to).with("/questions/#{answer.question.id}/answers",
+                                                        answer: answer, action:'update')
+        login(answer_author)
+        patch :update, id: answer, answer: { body: 'No idea' }
+      end
+    end
   end
 
   describe "DELETE #destroy" do

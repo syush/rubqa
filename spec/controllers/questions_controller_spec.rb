@@ -78,6 +78,16 @@ require 'rails_helper'
           expect(response).to render_template :new
         end
       end
+
+      context 'private_pub' do
+        it 'sends PrivatePub message' do
+          allow(Question).to receive(:new).and_return(question)
+          expect(PrivatePub).to receive(:publish_to).with("/questions", question:question, action:'create')
+          login(user)
+          post :create, question: attributes_for(:question)
+        end
+      end
+
     end
 
     describe "PATCH #update" do
@@ -147,6 +157,13 @@ require 'rails_helper'
 
       end
 
+      context 'private_pub' do
+        it 'sends PrivatePub message' do
+          expect(PrivatePub).to receive(:publish_to).with("/questions", question:question, action:'update')
+          login(user)
+          patch :update, id: question, question: { title: 'new title', body: 'new body'}
+        end
+      end
 
     end
 
@@ -183,6 +200,15 @@ require 'rails_helper'
           expect { delete :destroy, id: question }.not_to change(Question, :count)
         end
       end
+
+      context 'private_pub' do
+        it 'sends PrivatePub message' do
+          expect(PrivatePub).to receive(:publish_to).with("/questions", question_id:question.id, action:'destroy')
+          login(user)
+          delete :destroy, id: question
+        end
+      end
+
 
     end
 end
