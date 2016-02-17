@@ -6,4 +6,11 @@ class Api::V1::ProfilesController < Api::V1::BaseController
     render json: current_resource_owner
   end
 
+  def other_users
+    @other_users = User.where.not(id: current_resource_owner.id)
+    if @other_users.size > 1
+      render json: @other_users
+    end
+  end
+
 end

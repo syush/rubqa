@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :profiles do
         get :me, on: :collection
+        get :other_users, on: :collection
       end
       resources :questions
     end
