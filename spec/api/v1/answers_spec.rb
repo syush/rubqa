@@ -5,18 +5,11 @@ RSpec.describe "Answers API" do
 
     let(:user) { create(:user) }
     let!(:question) { create(:question, user:user) }
-    context "unauthorized" do
-      it 'returns 401 status if access token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", format: :json
-        expect(response.status).to eq 401
-      end
 
-      it 'returns 401 status if access token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable" do
+      let(:method) { :get }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
     end
-
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
@@ -50,18 +43,11 @@ RSpec.describe "Answers API" do
     let(:answer_author) { create(:user) }
     let(:question) { create(:question, user:question_author) }
     let!(:answer) { create(:answer, question:question, user:answer_author)}
-    context "unauthorized" do
-      it 'returns 401 status if access token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers/#{answer.id}", format: :json
-        expect(response.status).to eq 401
-      end
 
-      it 'returns 401 status if access token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers/#{answer.id}", format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable" do
+      let(:method) { :get }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
     end
-
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
