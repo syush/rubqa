@@ -4,10 +4,8 @@ RSpec.describe "Questions API" do
   describe "GET /index" do
 
     it_behaves_like "API Authenticable" do
-      def do_request(options = {})
-        get '/api/v1/questions', { format: :json }.merge(options)
-      end
-
+      let(:method) { :get }
+      let(:api_path) { '/api/v1/questions' }
     end
 
     context 'authorized' do

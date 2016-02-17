@@ -61,7 +61,7 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   config.include AcceptanceHelpers, type: :feature
   config.include WaitForAjax, type: :feature
-  config.include ApiHelpers, type: :api
+  config.include ApiHelpers
 
   config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
   config.before(:each) { DatabaseCleaner.strategy = :transaction }
