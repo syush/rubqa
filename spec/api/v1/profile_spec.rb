@@ -27,7 +27,6 @@ RSpec.describe "Profiles API" do
         end
       end
 
-
     end
 
   end
@@ -46,10 +45,8 @@ RSpec.describe "Profiles API" do
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
       before { get '/api/v1/profiles', format: :json, access_token: access_token.token }
 
-      it_behaves_like "API Successful"
-
-      it 'includes all users minus 1' do
-        expect(response.body).to have_json_size(2).at_path("profiles/")
+      it_behaves_like "API Successful" do
+        let(:json_size) { {'profiles/': 2} }
       end
 
       %w(id email created_at updated_at admin).each do |attr|
@@ -64,11 +61,6 @@ RSpec.describe "Profiles API" do
         end
       end
 
-
     end
-
-
   end
-
-
 end

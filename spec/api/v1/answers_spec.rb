@@ -19,10 +19,8 @@ RSpec.describe "Answers API" do
       let!(:answers) { create_list(:answer, 3, question:question, user:answer_author) }
       before { get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: access_token.token }
 
-      it_behaves_like "API Successful"
-
-      it 'returns list of answers' do
-        expect(response.body).to have_json_size(3).at_path('answers')
+      it_behaves_like "API Successful" do
+        let(:json_size) { {'answers':3} }
       end
 
       %w(id body created_at updated_at).each do |attr|
@@ -57,7 +55,9 @@ RSpec.describe "Answers API" do
       let!(:attachments) { create_list(:attachment, 3, attachable:answer)}
       before { get "/api/v1/questions/#{question.id}/answers/#{answer.id}", format: :json, access_token: access_token.token }
 
-      it_behaves_like "API Successful"
+      it_behaves_like "API Successful" do
+        let(:json_size) { {'answer/attachments':3} }
+      end
 
       %w(id body created_at updated_at).each do |attr|
         it "answer contains #{attr}" do
