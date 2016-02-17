@@ -15,9 +15,7 @@ RSpec.describe "Questions API" do
       let(:question) { questions.first }
       before { get '/api/v1/questions', format: :json, access_token: access_token.token }
 
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
+      it_behaves_like "API Successful"
 
       it 'returns list of questions' do
         expect(response.body).to have_json_size(2).at_path('questions')
@@ -57,7 +55,7 @@ RSpec.describe "Questions API" do
 
     let(:user) { create(:user) }
     let!(:question) { create(:question, user:user) }
-  
+
     it_behaves_like "API Authenticable" do
       let(:method) { :get }
       let(:api_path) { "/api/v1/questions/#{question.id}" }
@@ -73,9 +71,7 @@ RSpec.describe "Questions API" do
       let!(:answer) { create(:answer, question:  question, user:other_user) }
       before { get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token }
 
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
+      it_behaves_like "API Successful"
 
       %w(id title body created_at updated_at).each do |attr|
         it "question contains #{attr}" do
