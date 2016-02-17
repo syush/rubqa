@@ -1,14 +1,15 @@
 class Question < ActiveRecord::Base
 
+  include Votable
+  include Attachable
+
   has_many :answers, dependent: :destroy
-  has_many :attachments, as: :attachable, dependent: :destroy
   belongs_to :user
 
   validates :user_id, presence: true
   validates :title, :body, presence:true
   validates :title, :length => { :maximum => 200 }
 
-  accepts_nested_attributes_for :attachments
 
   def best_answer
     self.answers.where(best_answer: true).first
