@@ -23,6 +23,8 @@ gem 'omniauth-vk'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cancancan'
+gem 'doorkeeper'
+gem 'active_model_serializers'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -63,4 +65,5 @@ group :test do
   gem 'shoulda-matchers', '~> 3.0'
   gem "factory_girl_rails"
   gem 'launchy'
+  gem 'json_spec'
 end
