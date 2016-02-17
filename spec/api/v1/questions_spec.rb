@@ -62,15 +62,17 @@ RSpec.describe "Questions API" do
     end
   end
 
-  describe "GET /:id" do
+  describe "GET /questions/:id" do
     context "unauthorized" do
+      let(:user) { create(:user) }
+      let(:question) { create(:question, user:user) }
       it 'returns 401 status if access token is invalid' do
-        get "/api/v1/questions/0", format: :json
+        get "/api/v1/questions/#{question.id}", format: :json
         expect(response.status).to eq 401
       end
 
       it 'returns 401 status if access token is invalid' do
-        get '/api/v1/questions/0', format: :json, access_token: '1234'
+        get "/api/v1/questions/#{question.id}", format: :json, access_token: '1234'
         expect(response.status).to eq 401
       end
 
