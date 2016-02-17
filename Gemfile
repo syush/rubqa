@@ -64,4 +64,5 @@ group :test do
   gem 'shoulda-matchers', '~> 3.0'
   gem "factory_girl_rails"
   gem 'launchy'
+  gem 'json_spec'
 end
