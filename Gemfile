@@ -24,6 +24,7 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cancancan'
 gem 'doorkeeper'
+gem 'active_model_serializers'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
