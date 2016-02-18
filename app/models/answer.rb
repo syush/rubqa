@@ -5,8 +5,6 @@ class Answer < ActiveRecord::Base
 
   belongs_to :question
   belongs_to :user
-  has_many :votes, as: :votable, dependent: :destroy
-  has_many :voters, through: :votes, source: :user
 
   validates :body, presence:true
   validates :question_id, presence:true
@@ -25,16 +23,5 @@ class Answer < ActiveRecord::Base
     self.best_answer = false
   end
 
-  def rating
-    self.votes.sum(:vote_value)
-  end
-
-  def voted?(user)
-    voters.include?(user)
-  end
-
-  def get_vote(user)
-    self.votes.where(user_id: user.id).first
-  end
 
 end
