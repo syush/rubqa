@@ -21,6 +21,10 @@ RSpec.describe Question, type: :model do
   let(:question) { create(:question, user:question_author) }
   let!(:answers) { create_list(:answer, 3, question:question, user:answer_author)}
 
+  it_behaves_like "Votable" do
+    let(:subject) { question }
+  end
+
   it 'returns absence of best answer' do
     expect(question.best_answer).to be_nil
   end

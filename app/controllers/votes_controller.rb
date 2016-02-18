@@ -20,9 +20,8 @@ class VotesController < ApplicationController
   end
 
   def destroy
-    @answer = @vote.votable
     unless @vote.destroy
-      redirect_to @answer.question, alert: 'Unable to remove vote'
+      redirect_to @vote.votable, alert: 'Unable to remove vote'
     end
   end
 

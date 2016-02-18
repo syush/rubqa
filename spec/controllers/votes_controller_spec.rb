@@ -10,95 +10,101 @@ RSpec.describe VotesController, type: :controller do
 
   describe "POST #create" do
 
-    context 'legitimate_voter' do
+    [:question, :answer].each do |type|
 
-      before { login voter }
+      let(:votable) { type == :question ? question : answer }
+      let(:votable_id) { type == :question ? :question_id : :answer_id }
 
-      it 'saves new vote to DB' do
-        attr = attributes_for(:vote_for)
-        expect { post :create, answer_id: answer.id,
-                      vote: attr, format: :js }.to change(Vote, :count).by(1)
+      context 'legitimate_voter' do
+
+        before { login voter }
+        it 'saves new vote to DB' do
+          attr = attributes_for(:vote_for)
+          expect { post :create, votable_id => votable.id,
+                        vote: attr, format: :js }.to change(Vote, :count).by(1)
+        end
+
+        it 'renders create template' do
+          attr = attributes_for(:vote_against)
+          post :create, votable_id => votable.id, vote: attr, format: :js
+          expect(response).to render_template :create
+        end
+
+        it 'saves correct positive vote' do
+          attr = attributes_for(:vote_for)
+          post :create, votable_id => votable.id, vote: attr, format: :js
+          votable.reload
+          expect(votable.votes.last.vote_value).to eq 1
+          expect(votable.votes.last.user_id).to eq voter.id
+        end
+
+        it 'saves correct negative vote' do
+          attr = attributes_for(:vote_against)
+          post :create, votable_id => votable.id, vote: attr, format: :js
+          votable.reload
+          expect(votable.votes.last.vote_value).to eq -1
+          expect(votable.votes.last.user_id).to eq voter.id
+        end
+
       end
 
-      it 'renders create template' do
-        attr = attributes_for(:vote_against)
-        post :create, answer_id: answer.id, vote: attr, format: :js
-        expect(response).to render_template :create
+      context "answer author" do
+
+        before { login votable.user }
+
+        it 'does not save vote to DB' do
+          attr = attributes_for(:vote_for)
+          expect { post :create, votable_id => votable.id,
+                        vote: attr, format: :js }.not_to change(Vote, :count)
+        end
+
       end
 
-      it 'saves correct positive vote' do
-        attr = attributes_for(:vote_for)
-        post :create, answer_id: answer.id, vote: attr, format: :js
-        answer.reload
-        expect(answer.votes.last.vote_value).to eq 1
-        expect(answer.votes.last.user_id).to eq voter.id
-      end
+      context "guest" do
 
-      it 'saves correct negative vote' do
-        attr = attributes_for(:vote_against)
-        post :create, answer_id: answer.id, vote: attr, format: :js
-        answer.reload
-        expect(answer.votes.last.vote_value).to eq -1
-        expect(answer.votes.last.user_id).to eq voter.id
-      end
+        it 'does not save vote to DB' do
+          attr = attributes_for(:vote_against)
+          expect { post :create, votable_id => votable.id,
+                        vote: attr, format: :js }.not_to change(Vote, :count)
+        end
 
+      end
     end
-
-    context "answer author" do
-
-      before { login answer_author }
-
-      it 'does not save vote to DB' do
-        attr = attributes_for(:vote_for)
-        expect { post :create, answer_id: answer.id,
-                      vote: attr, format: :js }.not_to change(Vote, :count)
-      end
-
-    end
-
-    context "guest" do
-
-      it 'does not save vote to DB' do
-        attr = attributes_for(:vote_against)
-        expect { post :create, answer_id: answer.id,
-                      vote: attr, format: :js }.not_to change(Vote, :count)
-      end
-
-    end
-
   end
 
   describe "DELETE #destroy" do
-    let!(:vote) { create(:vote_for, votable:answer, user:voter) }
+    [:answer, :question].each do |type|
+      let(:votable) { type == :answer ? answer : question}
+      let!(:vote) { create(:vote_for, votable:votable, user:voter) }
 
-    context 'voter' do
-      before { login voter }
+      context 'voter' do
+        before { login voter }
 
-      it 'deletes vote from DB' do
-        expect { delete :destroy, id: vote.id, format: :js }.to change(Vote, :count).by(-1)
+        it 'deletes vote from DB' do
+          expect { delete :destroy, id: vote.id, format: :js }.to change(Vote, :count).by(-1)
+        end
+
+        it 'renders destroy template' do
+          delete :destroy, id: vote, format: :js
+          expect(response).to render_template :destroy
+        end
       end
 
-      it 'renders destroy template' do
-        delete :destroy, id: vote, format: :js
-        expect(response).to render_template :destroy
+      context 'non-voter' do
+        it 'does not delete the vote from DB' do
+          non_voter = create(:user)
+          login(non_voter)
+          expect { delete :destroy, id: vote, format: :js }.not_to change(Vote, :count)
+        end
+
+      end
+
+      context 'guest' do
+        it 'does not delete the vote from DB' do
+          expect { delete :destroy, id: vote, format: :js }.not_to change(Vote, :count)
+        end
       end
     end
-
-    context 'non-voter' do
-      it 'does not delete the vote from DB' do
-        non_voter = create(:user)
-        login(non_voter)
-        expect { delete :destroy, id: vote, format: :js }.not_to change(Vote, :count)
-      end
-
-    end
-
-    context 'guest' do
-      it 'does not delete the vote from DB' do
-        expect { delete :destroy, id: vote, format: :js }.not_to change(Vote, :count)
-      end
-    end
-
   end
 
 
