@@ -11,7 +11,13 @@ class VotesController < ApplicationController
       @vote = Vote.new(vote_params)
       @vote.votable = @votable
       @vote.user_id = current_user.id
-      unless @vote.save
+      if @vote.save
+        if @votable.is_a?(Answer)
+          render 'create_for_answer'
+        else
+          render 'create_for_question'
+        end
+      else
         redirect_to @votable, alert: 'Unable to vote'
       end
     else
@@ -21,9 +27,16 @@ class VotesController < ApplicationController
 
   def destroy
     @votable = @vote.votable
-    unless @vote.destroy
+    if @vote.destroy
+      if @votable.is_a?(Answer)
+        render 'destroy_for_answer'
+      else
+        render 'destroy_for_question'
+      end
+    else
       redirect_to @votable, alert: 'Unable to remove vote'
     end
+
   end
 
   private

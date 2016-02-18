@@ -1,0 +1,16 @@
+<% publish_to "/questions/#{@votable.id}/answers" do %>
+var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
+var IAmTheVoter = userID == <%= current_user.id %>;
+if (IAmTheVoter) {
+    $(".question-votes").html(
+            '<p class="rating"> Rating: ' + <%= @votable.rating.to_s %> + '</p>' +
+            '<span class="current-vote">' +
+            '<%= @vote.is_like? ? "You like this question" : "You dislike this question" %>' +
+            '</span>' +
+            '  |  ' +
+            '<span class="vote-cancel-link">' +
+            '<%= link_to "Cancel vote", vote_path(@vote), method: :delete, remote: true %>' +
+            '</span>'
+    );
+}
+<% end %>

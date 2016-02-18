@@ -11,9 +11,9 @@ RSpec.describe VotesController, type: :controller do
   describe "POST #create" do
 
     [1, 2].each do |type|
-
       let(:votable) { (type == 1) ? answer : question }
       let(:votable_id) { (type == 1) ? :answer_id : :question_id }
+      let(:template) { (type == 1) ? :create_for_answer : :create_for_question }
 
       context 'legitimate_voter' do
 
@@ -27,7 +27,7 @@ RSpec.describe VotesController, type: :controller do
         it 'renders create template' do
           attr = attributes_for(:vote_against)
           post :create, votable_id => votable.id, vote: attr, format: :js
-          expect(response).to render_template :create
+          expect(response).to render_template template
         end
 
         it 'saves correct positive vote' do
@@ -75,6 +75,7 @@ RSpec.describe VotesController, type: :controller do
   describe "DELETE #destroy" do
     [1, 2].each do |type|
       let(:votable) { (type == 1) ? answer : question}
+      let(:template) { (type == 1) ? :destroy_for_answer : :destroy_for_question }
       let!(:vote) { create(:vote_for, votable:votable, user:voter) }
 
       context 'voter' do
@@ -86,7 +87,7 @@ RSpec.describe VotesController, type: :controller do
 
         it 'renders destroy template' do
           delete :destroy, id: vote, format: :js
-          expect(response).to render_template :destroy
+          expect(response).to render_template template
         end
       end
 
