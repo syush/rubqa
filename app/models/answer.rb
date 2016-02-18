@@ -5,7 +5,7 @@ class Answer < ActiveRecord::Base
 
   belongs_to :question
   belongs_to :user
-  has_many :votes, dependent: :destroy
+  has_many :votes, as: :votable, dependent: :destroy
   has_many :voters, through: :votes, source: :user
 
   validates :body, presence:true

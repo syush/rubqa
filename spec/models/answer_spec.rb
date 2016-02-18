@@ -22,8 +22,8 @@ RSpec.describe Answer, type: :model do
   let(:another_answer) { create(:answer, user:answer_author, question:question) }
   before do
     votes = []
-    (0..6).to_a.each { |i| votes << create(:vote_for, user:voters[i], answer:answer) }
-    (7..9).to_a.each { |i| votes << create(:vote_against, user:voters[i], answer:answer) }
+    (0..6).to_a.each { |i| votes << create(:vote_for, user:voters[i], votable:answer) }
+    (7..9).to_a.each { |i| votes << create(:vote_against, user:voters[i], votable:answer) }
   end
 
   it 'should validate that at most one answer is best' do

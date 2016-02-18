@@ -32,9 +32,9 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to  :destroy, create(:question, user: other) }
     it { should_not be_able_to :destroy, create(:answer, user: other, question: create(:question, user:user)) }
     it { should be_able_to :create, Vote }
-    it { should be_able_to :destroy, create(:vote_for, user: user, answer:
+    it { should be_able_to :destroy, create(:vote_for, user: user, votable:
                                    create(:answer, user:other, question:create(:question, user:yet_another))) }
-    it { should_not be_able_to :destroy, create(:vote_for, user: other, answer:
+    it { should_not be_able_to :destroy, create(:vote_for, user: other, votable:
                                    create(:answer, user: yet_another, question:create(:question, user:user))) }
     it { should be_able_to :select_as_best, create(:answer, user:other, question: create(:question, user:user)) }
     it { should_not be_able_to :select_as_best, create(:answer, user:other, question: create(:question, user:yet_another)) }

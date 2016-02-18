@@ -9,7 +9,7 @@ class VotesController < ApplicationController
     @answer = Answer.find(params[:answer_id])
     if current_user.id != @answer.user_id
       @vote = Vote.new(vote_params)
-      @vote.answer = @answer
+      @vote.votable = @answer
       @vote.user_id = current_user.id
       unless @vote.save
         redirect_to @answer.question, alert: 'Unable to vote'
@@ -20,7 +20,7 @@ class VotesController < ApplicationController
   end
 
   def destroy
-    @answer = @vote.answer
+    @answer = @vote.votable
     unless @vote.destroy
       redirect_to @answer.question, alert: 'Unable to remove vote'
     end

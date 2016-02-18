@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125162455) do
+ActiveRecord::Schema.define(version: 20160217222810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,12 +87,11 @@ ActiveRecord::Schema.define(version: 20160125162455) do
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "questions", force: :cascade do |t|
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "body"
     t.string   "title"
     t.integer  "user_id"
-    t.integer  "best_answer_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -111,10 +110,11 @@ ActiveRecord::Schema.define(version: 20160125162455) do
 
   create_table "votes", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "answer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.integer  "vote_value"
+    t.integer  "votable_id"
+    t.string   "votable_type"
   end
 
 end

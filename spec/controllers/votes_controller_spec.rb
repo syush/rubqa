@@ -69,7 +69,7 @@ RSpec.describe VotesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let!(:vote) { create(:vote_for, answer:answer, user:voter) }
+    let!(:vote) { create(:vote_for, votable:answer, user:voter) }
 
     context 'voter' do
       before { login voter }

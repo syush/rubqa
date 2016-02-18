@@ -11,7 +11,7 @@ RSpec.describe AnswersController, type: :controller do
     before { login(answer_author) }
 
     context 'valid' do
-      it 'saves new question in DB' do
+      it 'saves new answer in DB' do
         attr = attributes_for(:answer)
         expect { post :create, question_id: question.id,
                       answer: attr, format: :js }.to change(Answer, :count).by(1)
