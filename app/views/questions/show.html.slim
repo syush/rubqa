@@ -12,6 +12,9 @@ p
   - if can?(:update, @question)
     ="  |  "
     span.edit-question-link= link_to 'Edit question', '#'
+.question-votes
+  p.rating= "Rating: #{@question.rating}"
+  = render 'votes/voting_frame', votable: @question, type: 'question'
 hr
 #count
   h2="#{@count} answer(s):" unless @question.answers.empty?

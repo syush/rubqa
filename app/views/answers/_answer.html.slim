@@ -24,14 +24,5 @@
           ="  |  "
         span.select-best-answer-link= link_to 'Select as best answer', select_as_best_answer_path(answer), remote:true
   .votes
-    - if user_signed_in? && !answer.voted?(current_user) && !i_am_author_of(answer)
-      table
-        tr
-          td.like-button= render 'votes/form', answer:answer, like: true
-          td.dislike-button= render 'votes/form', answer:answer, like: false
-    - if user_signed_in? && answer.voted?(current_user)
-      - vote = answer.get_vote(current_user)
-      span.current-vote= vote.is_like? ? "You like this answer" : "You dislike this answer"
-      ="  |  "
-      span.vote-cancel-link= link_to 'Cancel vote', vote_path(vote), method: :delete, remote: true
+    = render 'votes/voting_frame', votable: answer, type: 'answer'
   hr

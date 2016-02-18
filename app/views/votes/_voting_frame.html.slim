@@ -1,0 +1,10 @@
+- if user_signed_in? && !votable.voted?(current_user) && !i_am_author_of(votable)
+  table
+    tr
+      td.like-button= render 'votes/form', votable:votable, like: true
+      td.dislike-button= render 'votes/form', votable:votable, like: false
+  - if user_signed_in? && votable.voted?(current_user)
+    - vote = votable.get_vote(current_user)
+    span.current-vote= vote.is_like? ? "You like this #{type}" : "You dislike this #{type}"
+    ="  |  "
+    span.vote-cancel-link= link_to 'Cancel vote', vote_path(vote), method: :delete, remote: true

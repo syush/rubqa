@@ -5,8 +5,8 @@
     $("#answer-<%= @votable.id %> .votes").html(
       '<table>' +
         '<tr>' +
-          '<td class="like-button"> <%= render 'votes/form', answer:@votable, like:true %></td>' +
-          '<td class="dislike-button"> <%= render 'votes/form', answer:@votable, like:false %></td>' +
+          '<td class="like-button"> <%= render 'votes/form', votable:@votable, like:true %></td>' +
+          '<td class="dislike-button"> <%= render 'votes/form', votable:@votable, like:false %></td>' +
         '</tr>' +
       '</table>'
     );

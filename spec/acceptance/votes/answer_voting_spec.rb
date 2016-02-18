@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Voting', %q{
+feature 'Answer voting', %q{
   In order to express my satisfaction or dissatisfaction with an answer,
   As an authorized user,
   I can vote for or against an answer, as well as change my opinion
