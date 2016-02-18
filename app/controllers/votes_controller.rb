@@ -6,22 +6,23 @@ class VotesController < ApplicationController
   authorize_resource
 
   def create
-    @answer = Answer.find(params[:answer_id])
-    if current_user.id != @answer.user_id
+    @votable = params[:answer_id] ? Answer.find(params[:answer_id]) : Question.find(params[:question_id])
+    if current_user.id != @votable.user_id
       @vote = Vote.new(vote_params)
-      @vote.votable = @answer
+      @vote.votable = @votable
       @vote.user_id = current_user.id
       unless @vote.save
-        redirect_to @answer.question, alert: 'Unable to vote'
+        redirect_to @votable, alert: 'Unable to vote'
       end
     else
-      redirect_to @answer.question, alert: "You can't vote for your own answer"
+      redirect_to @votable, alert: "You can't vote for your own votable item"
     end
   end
 
   def destroy
+    @votable = @vote.votable
     unless @vote.destroy
-      redirect_to @vote.votable, alert: 'Unable to remove vote'
+      redirect_to @votable, alert: 'Unable to remove vote'
     end
   end
 

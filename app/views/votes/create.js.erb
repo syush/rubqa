@@ -1,8 +1,8 @@
-<% publish_to "/questions/#{@answer.question.id}/answers" do %>
+<% publish_to "/questions/#{@votable.question.id}/answers" do %>
   var userID = parseInt(document.cookie.match( /user_id=(\d*)/ )[1]);
   var IAmTheVoter = userID == <%= current_user.id %>;
   if (IAmTheVoter) {
-      $("#answer-<%= @answer.id %> .votes").html(
+      $("#answer-<%= @votable.id %> .votes").html(
         '<span class="current-vote">' +
           '<%= @vote.is_like? ? "You like this answer" : "You dislike this answer" %>' +
         '</span>' +
@@ -12,5 +12,5 @@
         '</span>'
       );
   }
-  $("#answer-<%= @answer.id %> .rating").html("Rating: <%= @answer.rating %>");
+  $("#answer-<%= @votable.id %> .rating").html("Rating: <%= @votable.rating %>");
 <% end %>

@@ -10,10 +10,10 @@ RSpec.describe VotesController, type: :controller do
 
   describe "POST #create" do
 
-    [:question, :answer].each do |type|
+    [1, 2].each do |type|
 
-      let(:votable) { type == :question ? question : answer }
-      let(:votable_id) { type == :question ? :question_id : :answer_id }
+      let(:votable) { (type == 1) ? answer : question }
+      let(:votable_id) { (type == 1) ? :answer_id : :question_id }
 
       context 'legitimate_voter' do
 
@@ -48,7 +48,7 @@ RSpec.describe VotesController, type: :controller do
 
       end
 
-      context "answer author" do
+      context "votable item author" do
 
         before { login votable.user }
 
@@ -73,15 +73,15 @@ RSpec.describe VotesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    [:answer, :question].each do |type|
-      let(:votable) { type == :answer ? answer : question}
+    [1, 2].each do |type|
+      let(:votable) { (type == 1) ? answer : question}
       let!(:vote) { create(:vote_for, votable:votable, user:voter) }
 
       context 'voter' do
         before { login voter }
 
         it 'deletes vote from DB' do
-          expect { delete :destroy, id: vote.id, format: :js }.to change(Vote, :count).by(-1)
+          expect { delete :destroy, id: vote, format: :js }.to change(Vote, :count).by(-1)
         end
 
         it 'renders destroy template' do
