@@ -25,6 +25,9 @@ gem 'remotipart'
 gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -59,6 +62,12 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger',require: false
 end
 
 group :test do
